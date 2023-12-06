@@ -121,5 +121,3 @@ target/
 .classpath
 .project
 .settings/
-
-config.properties

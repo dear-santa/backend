@@ -8,10 +8,10 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 import org.apache.ibatis.io.Resources;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import lombok.extern.log4j.Log4j;
-
 
 @Log4j
 public class JDBCTest {
@@ -23,7 +23,8 @@ public class JDBCTest {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Ignore
 	@Test
 	public void testConnection() {
 		String resource = "config/config.properties";
