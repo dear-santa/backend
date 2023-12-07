@@ -24,15 +24,13 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @Value("#{systemProperties['spring.social.kakao.client_id']}")
-
-    private String clientId;
-
-    @Value("#{systemProperties['spring.social.kakao.redirect_uri']}")
-    private String redirectUri;
-
     @RequestMapping("/")
     public String index(Model model){
+        String clientId = oAuthService.getClientId();
+        String redirectUri = oAuthService.getRedirectUri();
+        log.info("kakao : clientId " + clientId);
+        log.info("kakao : redirectUri " + redirectUri);
+
         model.addAttribute("clientId", clientId);
         model.addAttribute("redirectUri", redirectUri);
 
@@ -41,12 +39,14 @@ public class AuthController {
 
     @RequestMapping(value="/login")
     public String login(@RequestParam("code") String code, HttpSession session, Model model) {
+        String clientId = oAuthService.getClientId();
+        String redirectUri = oAuthService.getRedirectUri();
+
         model.addAttribute("clientId", clientId);
         model.addAttribute("redirectUri", redirectUri);
         String access_Token = oAuthService.getKakaoAccessToken(code);
         HashMap<String, Object> userInfo = oAuthService.getUserInfo(access_Token);
         log.info("login Controller : " + userInfo);
-
         try {
             //    클라이언트의 이메일이 존재할 때 세션에 해당 이메일을 저장
             if (userInfo.get("email") != null) {
