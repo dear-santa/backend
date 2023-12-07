@@ -23,7 +23,7 @@
 		  p:dataSource-ref="dataSource"
 		  p:typeAliasesPackage="com.dearsanta.app.domain"/>
 
-	<mybatis-spring:scan base-package="com.dearsanta.app"/>
+	<mybatis-spring:scan base-package="com.dearsanta.app.mapper"/>
 
 	<context:property-placeholder location="classpath:/config.properties" />
 
