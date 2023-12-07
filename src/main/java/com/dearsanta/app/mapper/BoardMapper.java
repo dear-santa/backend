@@ -1,7 +1,7 @@
 package com.dearsanta.app.mapper;
 
-import com.dearsanta.app.domain.Board;
+import com.dearsanta.app.dto.BoardDetailDto;
 
 public interface BoardMapper {
-    Board getBoardDetail(String boardId);
+    BoardDetailDto getBoardDetail(String boardId);
 }
