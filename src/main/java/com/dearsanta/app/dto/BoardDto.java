@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Builder
 @Getter
-public class BoardDetailDto {
+public class BoardDto {
     private String id;
     private String title;
     private String content;
