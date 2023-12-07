@@ -15,17 +15,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDetailDto getBoardDetail(String boardId) {
         Board boardDetail = boardMapper.getBoardDetail(boardId);
-        BoardDetailDto boardDetailDto = BoardDetailDto.builder()
-                .id(boardDetail.getId())
-                .title(boardDetail.getTitle())
-                .content(boardDetail.getContent())
-                .createdDate(boardDetail.getCreatedDate())
-                .updatedDate(boardDetail.getUpdatedDate())
-                .userId(boardDetail.getUserId())
-                .imgUrl(boardDetail.getImgUrl())
-                .likeCount(boardDetail.getLikeCount())
-                .viewCount(boardDetail.getViewCount())
-                .build();
+        BoardDetailDto boardDetailDto = boardDetail.toDTO();
         return boardDetailDto;
     }
 }
