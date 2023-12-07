@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dearsanta.app.mapper.BoardMapper">
+    <select id="getBoardDetail" resultType="com.dearsanta.app.domain.Board">
+        SELECT  id,
+                title,
+                content,
+                created_date AS createdDate,
+                updated_date AS updatedDate,
+                user_id AS userId,
+                img_url AS imgUrl,
+                like_count AS likeCount,
+                view_count AS viewCount
+        FROM    board
+        WHERE   id = #{boardId}
+        AND     is_deleted = 0
+    </select>
+</mapper>
