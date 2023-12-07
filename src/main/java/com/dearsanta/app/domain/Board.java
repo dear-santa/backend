@@ -1,6 +1,5 @@
 package com.dearsanta.app.domain;
 
-import com.dearsanta.app.dto.BoardDetailDto;
 import lombok.Getter;
 
 import java.util.Date;

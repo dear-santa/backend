@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dearsanta.app.mapper.BoardMapper">
-    <select id="getBoardDetail" resultType="com.dearsanta.app.dto.BoardDetailDto">
+    <select id="getBoard" resultType="com.dearsanta.app.dto.BoardDto">
         SELECT  id,
                 title,
                 content,

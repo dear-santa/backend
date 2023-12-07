@@ -1,7 +1,7 @@
 package com.dearsanta.app.service;
 
-import com.dearsanta.app.dto.BoardDetailDto;
+import com.dearsanta.app.dto.BoardDto;
 
 public interface BoardService {
-    public BoardDetailDto getBoardDetail(String boardId);
+    public BoardDto getBoard(String boardId);
 }
