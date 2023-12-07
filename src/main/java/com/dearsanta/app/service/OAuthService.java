@@ -3,6 +3,9 @@ package com.dearsanta.app.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +15,13 @@ import java.net.URL;
 import java.util.HashMap;
 
 
+@Setter
+@Getter
 @Service
+@Log4j
 public class OAuthService {
 
-    @Value("#{systemProperties['spring.social.kakao.client_id']}")
     private String clientId;
-
-    @Value("#{systemProperties['spring.social.kakao.redirect_uri']}")
     private String redirectUri;
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
@@ -44,9 +47,9 @@ public class OAuthService {
             bw.write(sb.toString());
             bw.flush();
 
-//            //결과 코드가 200이라면 성공
-//            int responseCode = conn.getResponseCode();
-//            System.out.println("responseCode : " + responseCode);
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+            log.info("responseCode : " + responseCode);
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -56,7 +59,7 @@ public class OAuthService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
+            log.info("response body : " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();
@@ -65,8 +68,8 @@ public class OAuthService {
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
-            System.out.println("access_token : " + access_Token);
-            System.out.println("refresh_token : " + refresh_Token);
+            log.info("access_token : " + access_Token);
+            log.info("refresh_token : " + refresh_Token);
 
             br.close();
             bw.close();
@@ -91,7 +94,7 @@ public class OAuthService {
             conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            log.info("responseCode : " + responseCode);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -101,7 +104,7 @@ public class OAuthService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
+            log.info("response body : " + result);
 
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
@@ -128,7 +131,7 @@ public class OAuthService {
             conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            log.info("responseCode : " + responseCode);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -138,7 +141,7 @@ public class OAuthService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println(result);
+            log.info(result);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,8 +8,8 @@
     <title>Insert title here</title>
 </head>
 <body>
-${CLIENTID}
-${clientId}
+<h1>크리스마스의 소중한 추억을 나눠주세요</h1>
+<h4>가장 기억에 남는 크리스마스 추억을 얘기해주세요.<br> 또, 올 크리스마스를 함께 할 음식, 장소, 선물을 공유해요.</h4>
 <c:if test="${userId eq null}">
     <c:url var="kakaoAuthUrl" value="https://kauth.kakao.com/oauth/authorize">
         <c:param name="client_id" value="${clientId}" />
