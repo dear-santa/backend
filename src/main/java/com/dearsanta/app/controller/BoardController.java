@@ -24,7 +24,13 @@ public class BoardController {
         // TODO: session에서 userId 가져오는 부분 service로 옮기기 (security 적용 후)
         Object userId = session.getAttribute("userId");
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new RuntimeException("권한이 없습니다.");
+        }
+        if (boardRequestDto.getTitle().length() > 100) {
+            throw new IllegalArgumentException("제목은 100자 이하로 입력해주세요.");
+        }
+        if (boardRequestDto.getContent().length() > 1000) {
+            throw new IllegalArgumentException("내용은 1000자 이하로 입력해주세요.");
         }
         boardRequestDto.setUserId(userId.toString());
         boardService.createBoard(boardRequestDto);
@@ -52,6 +58,12 @@ public class BoardController {
         String boardUserId = boardService.getBoard(boardId).getUserId();
         if (!userId.toString().equals(boardUserId)) {
             throw new RuntimeException("권한이 없습니다.");
+        }
+        if (boardRequestDto.getTitle().length() > 100) {
+            throw new IllegalArgumentException("제목은 100자 이하로 입력해주세요.");
+        }
+        if (boardRequestDto.getContent().length() > 1000) {
+            throw new IllegalArgumentException("내용은 1000자 이하로 입력해주세요.");
         }
         boardService.updateBoard(boardId, boardRequestDto);
         log.info("updateBoard: " + boardId);
