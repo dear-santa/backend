@@ -3,6 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dearsanta.app.mapper.BoardMapper">
+    <insert id="createBoard" parameterType="com.dearsanta.app.dto.BoardRequestDto">
+        INSERT INTO board (
+            id,
+            board_category_id,
+            title,
+            content,
+            user_id,
+            img_url
+        ) VALUES (
+                     #{id, jdbcType=VARCHAR},
+                     #{boardCategoryId, jdbcType=VARCHAR},
+                     #{title, jdbcType=VARCHAR},
+                     #{content, jdbcType=VARCHAR},
+                     #{userId, jdbcType=VARCHAR},
+                     #{imgUrl, jdbcType=VARCHAR}
+                 )
+    </insert>
     <select id="getBoard" resultType="com.dearsanta.app.dto.BoardDto">
         SELECT  id,
                 title,
