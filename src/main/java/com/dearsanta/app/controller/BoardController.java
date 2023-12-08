@@ -41,7 +41,7 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(board);
     }
 
-    @PatchMapping("/{boardId}")
+    @DeleteMapping("/{boardId}")
     public ResponseEntity<Void> deleteBoard (
             @PathVariable("boardId") String boardId,
             HttpSession session
@@ -50,7 +50,7 @@ public class BoardController {
         Object userId = session.getAttribute("userId");
         String boardUserId = boardService.getBoard(boardId).getUserId();
         if (!userId.toString().equals(boardUserId)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new RuntimeException("권한이 없습니다.");
         }
         boardService.deleteBoard(boardId);
         log.info("deleteBoard: " + boardId);
