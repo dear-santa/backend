@@ -27,13 +27,15 @@ public class BoardServiceImpl implements BoardService{
             String mainCategory, String subCategory, int pageNum, int pageSize, Sorted sorted
     ) {
         String categoryId = findBoardCategoryId(mainCategory, subCategory);
-        log.info("pageNum:" + pageNum + " pageSize: " + pageSize + " sort: " + sorted.getIndexColumn());
         Criteria criteria = new Criteria(categoryId, pageNum, pageSize, sorted.getIndexColumn());
+        log.info("pageNum:" + pageNum + " pageSize: " + pageSize + " sort: " + sorted.getIndexColumn());
+
         List<BoardDto> boardDtos = boardMapper.getBoardListWithPaging(criteria);
         return new BoardListDto(boardDtos);
     }
 
-    private String findBoardCategoryId(String mainCategory, String subCategory) {
+    @Override
+    public String findBoardCategoryId(String mainCategory, String subCategory) {
         String categoryId = boardCategoryMapper.getBoardCategoryId(mainCategory, subCategory);
         log.info("{mainCategory: " + mainCategory + ", subCategory: " + subCategory + "} => categoryId=" + categoryId);
 

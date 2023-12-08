@@ -8,5 +8,7 @@ public interface BoardService {
 
     BoardDto getBoard(String boardId);
 
+    String findBoardCategoryId(String mainCategory, String subCategory);
+
     BoardListDto getBoardListWithPaging(String mainCategory, String subCategory, int pageNum, int pageSize, Sorted sorted);
 }
