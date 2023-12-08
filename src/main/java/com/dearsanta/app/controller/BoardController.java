@@ -28,6 +28,7 @@ public class BoardController {
         }
         boardRequestDto.setUserId(userId.toString());
         boardService.createBoard(boardRequestDto);
+        log.info("createBoard");
         return ResponseEntity.ok().build();
     }
 
@@ -36,6 +37,7 @@ public class BoardController {
             @PathVariable("boardId") String boardId
     ) {
         BoardDto board = boardService.getBoard(boardId);
+        log.info("getBoard: " + boardId);
         return ResponseEntity.status(HttpStatus.OK).body(board);
     }
 
@@ -51,7 +53,7 @@ public class BoardController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         boardService.deleteBoard(boardId);
-        log.info("deleteBoard: {}" + boardId);
+        log.info("deleteBoard: " + boardId);
         return ResponseEntity.ok().build();
     }
 }
