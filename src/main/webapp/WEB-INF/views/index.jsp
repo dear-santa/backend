@@ -5,7 +5,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Insert title here</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/static/img/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/resources/static/img//apple-icon-72x72.png">
+    <title>디어산타</title>
 </head>
 <body>
 <h1>크리스마스의 소중한 추억을 나눠주세요</h1>

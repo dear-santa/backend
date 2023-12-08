@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -24,26 +26,23 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/")
-    public String index(Model model){
+
+    @ModelAttribute
+    public void commonAttributes(Model model){
         String clientId = oAuthService.getClientId();
         String redirectUri = oAuthService.getRedirectUri();
-        log.info("kakao : clientId " + clientId);
-        log.info("kakao : redirectUri " + redirectUri);
 
         model.addAttribute("clientId", clientId);
         model.addAttribute("redirectUri", redirectUri);
+    }
 
+    @RequestMapping("/")
+    public String index(){
         return "index";
     }
 
     @RequestMapping(value="/login")
-    public String login(@RequestParam("code") String code, HttpSession session, Model model) {
-        String clientId = oAuthService.getClientId();
-        String redirectUri = oAuthService.getRedirectUri();
-
-        model.addAttribute("clientId", clientId);
-        model.addAttribute("redirectUri", redirectUri);
+    public String login(@RequestParam("code") String code, HttpSession session, RedirectAttributes rttr) {
         String access_Token = oAuthService.getKakaoAccessToken(code);
         HashMap<String, Object> userInfo = oAuthService.getUserInfo(access_Token);
         log.info("login Controller : " + userInfo);
@@ -68,17 +67,18 @@ public class AuthController {
             e.printStackTrace();
 
         }
-        return "index";
+        rttr.addFlashAttribute("result", "loginSuccess");
+        return "redirect:/";
     }
 
     @RequestMapping(value="/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, RedirectAttributes rttr) {
         oAuthService.kakaoLogout((String)session.getAttribute("access_Token"));
         session.removeAttribute("access_Token");
         session.removeAttribute("userId");
-        return "index";
+        rttr.addFlashAttribute("result", "logoutSuccess");
+        return "redirect:/";
     }
-
 
 
 }
