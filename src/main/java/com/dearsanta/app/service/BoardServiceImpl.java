@@ -25,4 +25,9 @@ public class BoardServiceImpl implements BoardService{
         BoardDto board = boardMapper.getBoard(boardId);
         return board;
     }
+
+    @Override
+    public void deleteBoard(String boardId) {
+        boardMapper.deleteBoard(boardId);
+    }
 }

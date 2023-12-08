@@ -34,4 +34,9 @@
         WHERE   id = #{boardId}
         AND     is_deleted = 0
     </select>
+    <delete id="deleteBoard">
+        UPDATE  board
+        SET     is_deleted = 1
+        WHERE   id = #{boardId}
+    </delete>
 </mapper>
