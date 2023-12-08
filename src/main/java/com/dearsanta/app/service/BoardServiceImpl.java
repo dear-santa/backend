@@ -25,6 +25,9 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDto getBoard(String boardId) {
         BoardDto board = boardMapper.getBoard(boardId);
+        if (board == null) {
+            throw new NoSuchElementException("존재하지 않는 게시글입니다.");
+        }
         return board;
     }
 
