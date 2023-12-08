@@ -34,6 +34,14 @@
         WHERE   id = #{boardId}
         AND     is_deleted = 0
     </select>
+    <update id="updateBoard" parameterType="com.dearsanta.app.domain.Board">
+        UPDATE  board
+        SET     title = #{title, jdbcType=VARCHAR},
+                content = #{content, jdbcType=VARCHAR},
+                img_url = #{imgUrl, jdbcType=VARCHAR},
+                updated_date = sysdate
+        WHERE   id = #{id, jdbcType=VARCHAR}
+    </update>
     <delete id="deleteBoard">
         UPDATE  board
         SET     is_deleted = 1

@@ -1,11 +1,13 @@
 package com.dearsanta.app.service;
 
+import com.dearsanta.app.domain.Board;
 import com.dearsanta.app.dto.BoardDto;
 import com.dearsanta.app.dto.BoardRequestDto;
 import com.dearsanta.app.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -24,6 +26,14 @@ public class BoardServiceImpl implements BoardService{
     public BoardDto getBoard(String boardId) {
         BoardDto board = boardMapper.getBoard(boardId);
         return board;
+    }
+
+    @Override
+    public void updateBoard(String boardId, BoardRequestDto boardRequestDto) {
+        Board board = boardMapper.getBoard(boardId).toEntity();
+        Board updateBoard = boardRequestDto.toEntity();
+        board.update(updateBoard);
+        boardMapper.updateBoard(board);
     }
 
     @Override

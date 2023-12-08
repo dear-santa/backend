@@ -1,5 +1,6 @@
 package com.dearsanta.app.dto;
 
+import com.dearsanta.app.domain.Board;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,4 +18,18 @@ public class BoardDto {
     private String imgUrl;
     private int likeCount;
     private int viewCount;
+
+    public Board toEntity() {
+        return Board.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .createdDate(createdDate)
+                .updatedDate(updatedDate)
+                .userId(userId)
+                .imgUrl(imgUrl)
+                .likeCount(likeCount)
+                .viewCount(viewCount)
+                .build();
+    }
 }

@@ -41,6 +41,23 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(board);
     }
 
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<Void> updateBoard (
+            @PathVariable("boardId") String boardId,
+            @RequestBody BoardRequestDto boardRequestDto,
+            HttpSession session
+    ) {
+        // TODO: session에서 userId 가져와 비교하는 부분 service로 옮기기 (security 적용 후)
+        Object userId = session.getAttribute("userId");
+        String boardUserId = boardService.getBoard(boardId).getUserId();
+        if (!userId.toString().equals(boardUserId)) {
+            throw new RuntimeException("권한이 없습니다.");
+        }
+        boardService.updateBoard(boardId, boardRequestDto);
+        log.info("updateBoard: " + boardId);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{boardId}")
     public ResponseEntity<Void> deleteBoard (
             @PathVariable("boardId") String boardId,
