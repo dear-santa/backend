@@ -65,6 +65,16 @@ public class UserServiceTests {
         log.info(usersService.updateUser(dto));
     }
 
+    //@Ignore
+    @Test
+    public void testUpdateDeletedUser() {
+        SantaUserDto dto = SantaUserDto.builder()
+                .id("18cd435c-e931-4cfc-b70e-89b2153f091a")
+                .build();
+        log.info("updateDeletedUser...");
+        log.info(usersService.updateDeletedUser(dto));
+    }
+
     @Ignore
     @Test
     public void testDeleteUser() {

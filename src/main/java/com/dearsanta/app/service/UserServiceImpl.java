@@ -61,9 +61,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUser(SantaUserDto dto) {
-        SantaUser user =  dto.updateToEntity();
+        SantaUser user = dto.updateToEntity();
         log.info("updateUser...");
         return mapper.updateUser(user);
+    }
+
+    @Override
+    public boolean updateDeletedUser(SantaUserDto dto) {
+        SantaUser user = dto.updateDeletedUserToEntity();
+        log.info("updateDeletedUser...");
+        return mapper.updateDeletedUser(user);
     }
 
     @Override

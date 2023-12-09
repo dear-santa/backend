@@ -5,7 +5,6 @@ import com.dearsanta.app.service.OAuthService;
 import com.dearsanta.app.service.UserService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,11 +28,11 @@ public class AuthController {
 
     @ModelAttribute
     public void commonAttributes(Model model){
-        String clientId = oAuthService.getClientId();
-        String redirectUri = oAuthService.getRedirectUri();
+        String CLIENT_ID = oAuthService.getCLIENT_ID();
+        String REDIRECT_URI = oAuthService.getREDIRECT_URI();
 
-        model.addAttribute("clientId", clientId);
-        model.addAttribute("redirectUri", redirectUri);
+        model.addAttribute("CLIENT_ID", CLIENT_ID);
+        model.addAttribute("REDIRECT_URI", REDIRECT_URI);
     }
 
     @RequestMapping("/")
@@ -59,14 +58,19 @@ public class AuthController {
                     userService.insertUser(user);
                     user = userService.getUserByEmail(email);
                 }
+                if (user.getIsDeleted().equals("1")) {
+                    userService.updateDeletedUser(user);
+                }
 
-                session.setAttribute("userId", user.getId() );
+                session.setAttribute("userId", user.getId());
                 session.setAttribute("access_Token", access_Token);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-
+        } catch (Exception e){
+                e.printStackTrace();
         }
+
+
+
         rttr.addFlashAttribute("result", "loginSuccess");
         return "redirect:/";
     }
@@ -80,5 +84,19 @@ public class AuthController {
         return "redirect:/";
     }
 
+    @RequestMapping(value="unlink")
+    public String unlink(HttpSession session, RedirectAttributes rttr) {
+        String id = session.getAttribute("userId").toString();
+        //db 삭제
+        log.info("deleteUser...");
+        userService.deleteUser(id);
+
+        //카카오 연결 해제
+        oAuthService.kakaoUnlink((String)session.getAttribute("access_Token"));
+        session.removeAttribute("access_Token");
+        session.removeAttribute("userId");
+        rttr.addFlashAttribute("result", "unlinkSuccess");
+        return "redirect:/";
+    }
 
 }

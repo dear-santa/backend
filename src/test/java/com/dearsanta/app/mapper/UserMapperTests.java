@@ -68,6 +68,16 @@ public class UserMapperTests {
         log.info("updateUser : " + mapper.updateUser(entity));
     }
 
+    //@Ignore
+    @Test
+    public void updateDeletedUser() {
+        SantaUser entity = SantaUser.builder()
+                .id("18cd435c-e931-4cfc-b70e-89b2153f091a")
+                .nickname(Nickname.getDeletedUserNickname().toString())
+                .build();
+        log.info("updateDeletedUser : " + mapper.updateDeletedUser(entity));
+    }
+
     @Ignore
     @Test
     public void deleteUser() {

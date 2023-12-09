@@ -24,7 +24,7 @@ public class SantaUserDto {
     private String platform;
     private Date createdDate;
     private Date updatedDate;
-    private Character isDeleted;
+    private String isDeleted;
 
     public SantaUser toEntity() {
         return SantaUser.builder()
@@ -45,6 +45,15 @@ public class SantaUserDto {
                 .id(this.getId())
                 .nickname(this.getNickname())
                 .imgUrl(this.getImgUrl())
+                .updatedDate(this.getUpdatedDate())
+                .build();
+    }
+
+    public SantaUser updateDeletedUserToEntity() {
+        return SantaUser.builder()
+                .id(this.getId())
+                .isDeleted(this.getIsDeleted())
+                .nickname(Nickname.getDeletedUserNickname())
                 .updatedDate(this.getUpdatedDate())
                 .build();
     }
