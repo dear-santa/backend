@@ -28,6 +28,13 @@
 		<property name="redirectUri" value="${spring.social.kakao.redirect_uri}" />
 	</bean>
 
+	<bean id="aWSS3" class="com.dearsanta.app.util.AWSS3">
+		<property name="accessKey" value="${spring.aws.access_key}" />
+		<property name="secretKey" value="${spring.aws.secret_key}" />
+		<property name="bucketName" value="${spring.aws.s3.bucket}" />
+		<property name="region" value="${spring.aws.region}" />
+	</bean>
+
 	<mybatis-spring:scan base-package="com.dearsanta.app.mapper"/>
 	<context:component-scan base-package="com.dearsanta.app.service" />
 	<context:property-placeholder location="classpath:/config.properties" />

@@ -4,8 +4,10 @@ import com.dearsanta.app.domain.Board;
 import com.dearsanta.app.dto.BoardDto;
 import com.dearsanta.app.dto.BoardRequestDto;
 import com.dearsanta.app.mapper.BoardMapper;
+import com.dearsanta.app.util.AWSS3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -16,9 +18,16 @@ public class BoardServiceImpl implements BoardService{
     @Autowired
     BoardMapper boardMapper;
 
+    @Autowired
+    AWSS3 aWSS3;
+
     @Override
-    public void createBoard(BoardRequestDto boardRequestDto) {
+    public void createBoard(BoardRequestDto boardRequestDto, MultipartFile boardImage) {
         boardRequestDto.setId(UUID.randomUUID().toString());
+        if (boardImage != null) {
+            String imgUrl= aWSS3.uploadImage(boardRequestDto.getId(), boardImage);
+            boardRequestDto.setImgUrl(imgUrl);
+        }
         boardMapper.createBoard(boardRequestDto);
     }
 

@@ -6,8 +6,10 @@ import com.dearsanta.app.service.BoardService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,8 +21,12 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @PostMapping("/new")
-    public ResponseEntity<Void> createBoard(@RequestBody BoardRequestDto boardRequestDto, HttpSession session) {
+    @PostMapping(value="/new", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Void> createBoard(
+            @RequestPart BoardRequestDto boardRequestDto,
+            @RequestPart MultipartFile boardImage,
+            HttpSession session) {
+        log.info(boardRequestDto.getTitle() +  boardRequestDto.getContent() + boardImage);
         // TODO: session에서 userId 가져오는 부분 service로 옮기기 (security 적용 후)
         Object userId = session.getAttribute("userId");
         if (userId == null) {
@@ -33,7 +39,7 @@ public class BoardController {
             throw new IllegalArgumentException("내용은 1000자 이하로 입력해주세요.");
         }
         boardRequestDto.setUserId(userId.toString());
-        boardService.createBoard(boardRequestDto);
+        boardService.createBoard(boardRequestDto, boardImage);
         log.info("createBoard");
         return ResponseEntity.ok().build();
     }
