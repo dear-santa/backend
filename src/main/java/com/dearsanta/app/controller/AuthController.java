@@ -58,7 +58,7 @@ public class AuthController {
                     userService.insertUser(user);
                     user = userService.getUserByEmail(email);
                 }
-                if (user.getIsDeleted().equals("1")) {
+                if (user.getIsDeleted().equals(1)) {
                     userService.updateDeletedUser(user);
                 }
 
