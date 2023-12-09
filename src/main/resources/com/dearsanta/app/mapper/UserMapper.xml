@@ -12,6 +12,7 @@
              , platform
              , created_date AS "createdDate"
              , updated_date AS "updatedDate"
+             , IS_DELETED AS "isDeleted"
         FROM   santa_user
         WHERE  id = #{id}
     </select>
@@ -25,34 +26,44 @@
              , platform
              , created_date AS "createdDate"
              , updated_date AS "updatedDate"
+             , IS_DELETED AS "isDeleted"
         FROM   santa_user
     </select>
 
     <insert id="insertUser" parameterType="SantaUser">
-        INSERT INTO santa_user (id, email, nickname, role, img_url, platform)
+        INSERT INTO santa_user (id, email, nickname, role, img_url, platform, is_deleted)
         VALUES (
                 #{id}
               , #{email, jdbcType=VARCHAR}
               , #{nickname, jdbcType=VARCHAR}
               , #{role, jdbcType=VARCHAR}
               , #{imgUrl, jdbcType=VARCHAR}
-              , #{platform, jdbcType=VARCHAR})
+              , #{platform, jdbcType=VARCHAR}
+               )
     </insert>
 
     <update id="updateUser" parameterType="SantaUser">
         UPDATE santa_user
-        SET nickname = #{nickname}
+        SET nickname = #{nickname, jdbcType=VARCHAR}
           , img_url = #{imgUrl, jdbcType=VARCHAR}
           , updated_date = sysdate
         WHERE id = #{id}
     </update>
 
-    <update id="deleteUser" parameterType="SantaUser">
+    <update id="updateDeletedUser" parameterType="SantaUser">
+        UPDATE santa_user
+        SET is_deleted = 0
+          , nickname = #{nickname, jdbcType=VARCHAR}
+          , updated_date = sysdate
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="SantaUser">
         UPDATE santa_user
         SET is_deleted = 1
           , updated_date = sysdate
         WHERE id = #{id}
-    </update>
+    </delete>
 
     <select id="getUserByEmail" resultType="SantaUser">
         SELECT id
@@ -63,6 +74,7 @@
              , platform
              , created_date AS "createdDate"
              , updated_date AS "updatedDate"
+             , IS_DELETED AS "isDeleted"
         FROM   santa_user
         WHERE  email like #{email}
     </select>

@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -21,8 +20,10 @@ import java.util.HashMap;
 @Log4j
 public class OAuthService {
 
-    private String clientId;
-    private String redirectUri;
+    private String CLIENT_ID;
+    private String REDIRECT_URI;
+
+
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
         String refresh_Token = "";
@@ -41,8 +42,8 @@ public class OAuthService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=" + clientId);
-            sb.append("&redirect_uri=" + redirectUri);
+            sb.append("&client_id=" + CLIENT_ID);
+            sb.append("&redirect_uri=" + REDIRECT_URI);
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -142,6 +143,32 @@ public class OAuthService {
                 result += line;
             }
             log.info(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void kakaoUnlink(String access_Token) {
+        String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+            try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+
+            int responseCode = conn.getResponseCode();
+            log.info("responseCode : " + responseCode);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String result = "";
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            log.info(result);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

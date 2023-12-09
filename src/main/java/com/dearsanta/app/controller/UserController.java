@@ -55,16 +55,4 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/delete")
-    public ResponseEntity<?> deleteUser(HttpSession session) {
-        String id = session.getAttribute("userId").toString();
-        log.info("deleteUser...");
-        userService.deleteUser(id);
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 }
