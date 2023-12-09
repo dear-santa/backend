@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface BoardService {
     void createBoard(BoardRequestDto boardRequestDto, MultipartFile boardImage);
     BoardDto getBoard(String boardId);
-    void updateBoard(String boardId, BoardRequestDto boardRequestDto);
+    void updateBoard(String boardId, BoardRequestDto boardRequestDto, MultipartFile boardImage);
     void deleteBoard(String boardId);
 }

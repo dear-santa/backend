@@ -21,10 +21,10 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @PostMapping(value="/new", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value="/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createBoard(
-            @RequestPart BoardRequestDto boardRequestDto,
-            @RequestPart MultipartFile boardImage,
+            @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
+            @RequestPart("boardImage") MultipartFile boardImage,
             HttpSession session) {
         log.info(boardRequestDto.getTitle() +  boardRequestDto.getContent() + boardImage);
         // TODO: session에서 userId 가져오는 부분 service로 옮기기 (security 적용 후)
@@ -53,12 +53,12 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(board);
     }
 
-    @PatchMapping("/{boardId}")
+    @PatchMapping(value="/{boardId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateBoard (
             @PathVariable("boardId") String boardId,
-            @RequestBody BoardRequestDto boardRequestDto,
-            HttpSession session
-    ) {
+            @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
+            @RequestPart("boardImage") MultipartFile boardImage,
+            HttpSession session) {
         // TODO: session에서 userId 가져와 비교하는 부분 service로 옮기기 (security 적용 후)
         Object userId = session.getAttribute("userId");
         String boardUserId = boardService.getBoard(boardId).getUserId();
@@ -71,7 +71,7 @@ public class BoardController {
         if (boardRequestDto.getContent().length() > 1000) {
             throw new IllegalArgumentException("내용은 1000자 이하로 입력해주세요.");
         }
-        boardService.updateBoard(boardId, boardRequestDto);
+        boardService.updateBoard(boardId, boardRequestDto, boardImage);
         log.info("updateBoard: " + boardId);
         return ResponseEntity.ok().build();
     }

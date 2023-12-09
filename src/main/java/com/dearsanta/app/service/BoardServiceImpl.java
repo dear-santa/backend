@@ -41,9 +41,14 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void updateBoard(String boardId, BoardRequestDto boardRequestDto) {
+    public void updateBoard(String boardId, BoardRequestDto boardRequestDto, MultipartFile boardImage) {
         Board board = boardMapper.getBoard(boardId).toEntity();
         Board updateBoard = boardRequestDto.toEntity();
+        if (boardImage != null) {
+            // TODO: S3에 있는 기존 이미지 삭제 (지금은 그냥 덮어씌움)
+            String imgUrl= aWSS3.uploadImage(boardId, boardImage);
+            updateBoard.setImgUrl(imgUrl);
+        }
         board.update(updateBoard);
         boardMapper.updateBoard(board);
     }
