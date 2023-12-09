@@ -24,8 +24,8 @@
 		  p:typeAliasesPackage="com.dearsanta.app.domain"/>
 
 	<bean id="oAuthService" class="com.dearsanta.app.service.OAuthService">
-		<property name="clientId" value="${spring.social.kakao.client_id}" />
-		<property name="redirectUri" value="${spring.social.kakao.redirect_uri}" />
+		<property name="CLIENT_ID" value="${spring.social.kakao.client_id}" />
+		<property name="REDIRECT_URI" value="${spring.social.kakao.redirect_uri}" />
 	</bean>
 
 	<mybatis-spring:scan base-package="com.dearsanta.app.mapper"/>
