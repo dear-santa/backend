@@ -24,7 +24,7 @@ public class SantaUserDto {
     private String platform;
     private Date createdDate;
     private Date updatedDate;
-    private String isDeleted;
+    private Integer isDeleted;
 
     public SantaUser toEntity() {
         return SantaUser.builder()
