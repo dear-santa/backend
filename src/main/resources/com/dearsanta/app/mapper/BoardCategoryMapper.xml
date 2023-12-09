@@ -13,4 +13,10 @@
             WHERE   MAIN_CATEGORY = #{mainCategory}
     </select>
 
+    <select id="getBoardCategoryId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT  id
+        FROM    board_category
+        WHERE   main_category = #{mainCategory} AND sub_category = #{subCategory}
+    </select>
+
 </mapper>
