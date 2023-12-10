@@ -1,7 +1,9 @@
 package com.dearsanta.app.controller;
 
+import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
 import com.dearsanta.app.dto.BoardRequestDto;
+import com.dearsanta.app.dto.BoardListDto;
 import com.dearsanta.app.service.BoardService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class BoardController {
         log.info("getBoard: " + boardId);
         return ResponseEntity.status(HttpStatus.OK).body(board);
     }
-
+  
     @PatchMapping(value="/{boardId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateBoard (
             @PathVariable("boardId") String boardId,
@@ -90,5 +92,17 @@ public class BoardController {
         boardService.deleteBoard(boardId);
         log.info("deleteBoard: " + boardId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{mainCategory}/{subCategory}")
+    public ResponseEntity<BoardListDto> getBoardListWithPaging(
+            @PathVariable(value = "mainCategory") String mainCategory,
+            @PathVariable(value = "subCategory") String subCategory,
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+            @RequestParam(value = "sorted", defaultValue = "LATEST") Sorted sorted
+    ) {
+        BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, pageNum, pageSize, sorted);
+        return ResponseEntity.status(HttpStatus.OK).body(boards);
     }
 }

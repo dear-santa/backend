@@ -31,4 +31,10 @@ public enum Nickname {
         return words[index];
     }
 
+    public static String getDeletedUserNickname() {
+        StringBuilder randomNickname = new StringBuilder();
+        return randomNickname.append("돌아온 ")
+                .append(getRandomWord(NOUN.words))
+                .toString();
+    }
 }
