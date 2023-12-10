@@ -35,8 +35,13 @@
 		<property name="region" value="${spring.aws.region}" />
 	</bean>
 
+	<bean id="applicationProperties" class="com.dearsanta.app.config.ApplicationProperties">
+		<property name="DOMAIN" value="${front.domain}" />
+		<property name="FRONT_LOCAL_URL" value="${front.local.url}" />
+	</bean>
+
 	<mybatis-spring:scan base-package="com.dearsanta.app.mapper"/>
-	<context:component-scan base-package="com.dearsanta.app.service" />
+	<context:component-scan base-package="com.dearsanta.app" />
 	<context:property-placeholder location="classpath:/config.properties" />
 
 </beans>
