@@ -16,4 +16,5 @@ public interface BoardMapper {
     List<BoardDto> getBoardListWithPaging(@Param("criteria")Criteria criteria);
 
     void increaseReplyCount(String boardId);
+    void increaseViewCount(String boardId);
 }

@@ -72,6 +72,7 @@ public class BoardServiceImpl implements BoardService{
         if (board == null) {
             throw new NoSuchElementException("존재하지 않는 게시글입니다.");
         }
+        boardMapper.increaseViewCount(boardId);
         return board;
     }
 
