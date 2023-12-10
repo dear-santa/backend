@@ -1,35 +1,30 @@
 package com.dearsanta.app.dto;
 
 import com.dearsanta.app.domain.Board;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-import java.util.Date;
-
-@Builder
+@Setter
 @Getter
-public class BoardDto {
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class BoardRequestDto {
     private String id;
+    private String boardCategoryId;
     private String title;
     private String content;
-    private Date createdDate;
-    private Date updatedDate;
     private String userId;
     private String imgUrl;
-    private int likeCount;
-    private int viewCount;
 
     public Board toEntity() {
         return Board.builder()
                 .id(id)
+                .boardCategoryId(boardCategoryId)
                 .title(title)
                 .content(content)
-                .createdDate(createdDate)
-                .updatedDate(updatedDate)
                 .userId(userId)
                 .imgUrl(imgUrl)
-                .likeCount(likeCount)
-                .viewCount(viewCount)
                 .build();
     }
 }
