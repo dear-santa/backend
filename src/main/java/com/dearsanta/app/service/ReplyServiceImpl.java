@@ -2,9 +2,11 @@ package com.dearsanta.app.service;
 
 import com.dearsanta.app.domain.Reply;
 import com.dearsanta.app.domain.enumtype.Sorted;
+import com.dearsanta.app.dto.BoardDto;
 import com.dearsanta.app.dto.Criteria;
 import com.dearsanta.app.dto.ReplyDto;
 import com.dearsanta.app.dto.ReplyListDto;
+import com.dearsanta.app.mapper.BoardMapper;
 import com.dearsanta.app.mapper.ReplyMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,18 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Autowired
     ReplyMapper replyMapper;
+    @Autowired
+    BoardMapper boardMapper;
 
     @Override
     public void createReply(ReplyDto replyDto) {
+        BoardDto boardDto = boardMapper.getBoard(replyDto.getBoardId());
+        if (boardDto == null) {
+            throw new IllegalArgumentException("해당하는 게시글이 없습니다.");
+        }
         replyDto.setId(UUID.randomUUID().toString());
         replyMapper.createReply(replyDto);
+        boardMapper.increaseReplyCount(replyDto.getBoardId());
     }
 
     @Override

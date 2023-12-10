@@ -79,4 +79,9 @@
 		]]>
     </select>
 
+    <update id="increaseReplyCount" parameterType="java.lang.String">
+        UPDATE  board
+        SET     reply_count = reply_count + 1
+        WHERE   id = #{boardId}
+    </update>
 </mapper>
