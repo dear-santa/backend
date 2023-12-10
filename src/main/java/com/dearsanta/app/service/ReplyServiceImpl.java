@@ -1,14 +1,20 @@
 package com.dearsanta.app.service;
 
 import com.dearsanta.app.domain.Reply;
+import com.dearsanta.app.domain.enumtype.Sorted;
+import com.dearsanta.app.dto.Criteria;
 import com.dearsanta.app.dto.ReplyDto;
+import com.dearsanta.app.dto.ReplyListDto;
 import com.dearsanta.app.mapper.ReplyMapper;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+@Log4j
 @Service
 public class ReplyServiceImpl implements ReplyService {
 
@@ -19,6 +25,17 @@ public class ReplyServiceImpl implements ReplyService {
     public void createReply(ReplyDto replyDto) {
         replyDto.setId(UUID.randomUUID().toString());
         replyMapper.createReply(replyDto);
+    }
+
+    @Override
+    public ReplyListDto getReplyListWithPaging(
+            String boardId, int pageNum, int pageSize, Sorted sorted
+    ) {
+        Criteria criteria = new Criteria(boardId, pageNum, pageSize, sorted.getIndexColumn());
+        log.info("pageNum:" + pageNum + " pageSize: " + pageSize + " sort: " + sorted.getIndexColumn());
+
+        List<ReplyDto> replyDtos = replyMapper.getReplyListWithPaging(criteria);
+        return new ReplyListDto(replyDtos);
     }
 
     @Override
