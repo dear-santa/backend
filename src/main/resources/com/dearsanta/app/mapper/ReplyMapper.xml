@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dearsanta.app.mapper.ReplyMapper">
+    <insert id="createReply">
+        INSERT INTO reply (
+                           id,
+                           user_id,
+                           board_id,
+                           content
+        ) VALUES (
+                  #{id},
+                  #{userId},
+                  #{boardId},
+                  #{content}
+                 )
+    </insert>
+    <select id="getReply">
+        SELECT  id,
+                user_id AS userId,
+                board_id AS boardId,
+                content,
+                created_date AS createDate,
+                updated_date AS updatedDate
+        FROM    reply
+        WHERE   id = #{replyId}
+        AND     is_deleted = 0
+    </select>
+    <select id="getReplyListWithPaging" parameterType="com.dearsanta.app.dto.Criteria" resultType="com.dearsanta.app.dto.ReplyDto">
+        <![CDATA[
+        SELECT  /*+ INDEX_ASC(board ${criteria.sorted}) */
+                id,
+                user_id AS userId,
+                board_id AS boardId,
+                content,
+                created_date AS createdDate,
+                updated_date AS updatedDate
+        FROM
+            (
+            SELECT  rownum AS rn,
+                    id,
+                    user_id,
+                    board_id,
+                    content,
+                    created_date,
+                    updated_date
+            FROM    reply
+            WHERE   board_id = #{criteria.selectId}
+            AND     ROWNUM <= #{criteria.pageNum} * #{criteria.pageSize}
+            )
+        WHERE   rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
+        ]]>
+    </select>
+    <update id="updateReply">
+        UPDATE  reply
+        SET     content = #{content},
+                updated_date = sysdate
+        WHERE   id = #{id}
+    </update>
+    <delete id="deleteReply">
+        UPDATE  reply
+        SET     is_deleted = 1
+        WHERE   id = #{replyId}
+    </delete>
+</mapper>
