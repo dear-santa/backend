@@ -1,5 +1,6 @@
 package com.dearsanta.app.service;
 
+import com.dearsanta.app.auth.JwtProvider;
 import com.dearsanta.app.domain.SantaUser;
 import com.dearsanta.app.dto.SantaUserDto;
 import com.dearsanta.app.dto.UserListDto;
@@ -19,6 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper mapper;
+
+    @Autowired
+    private final JwtProvider jwtProvider;
 
     @Override
     public void insertUser(SantaUserDto dto) {
@@ -42,6 +46,8 @@ public class UserServiceImpl implements UserService {
         }
         return SantaUser.toDto(user);
     }
+
+
     @Override
     public UserListDto getUserList() {
         log.info("getUserList...");

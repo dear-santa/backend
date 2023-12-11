@@ -2,7 +2,7 @@ package com.dearsanta.app.mapper;
 
 import com.dearsanta.app.domain.SantaUser;
 import com.dearsanta.app.domain.enumtype.Nickname;
-import com.dearsanta.app.domain.enumtype.Platform;
+import com.dearsanta.app.domain.enumtype.OauthProvider;
 import com.dearsanta.app.domain.enumtype.Role;
 import lombok.extern.log4j.Log4j;
 import org.junit.Ignore;
@@ -33,7 +33,7 @@ public class UserMapperTests {
                         .email("aaa22@gmail.com")
                         .nickname(Nickname.getRandomNickname().toString())
                         .role(Role.ROLE_USER.toString())
-                        .platform(Platform.KAKAO.toString())
+                        .platform(OauthProvider.KAKAO.toString())
                         .build();
         log.info("insertUser...");
         mapper.insertUser(entity);

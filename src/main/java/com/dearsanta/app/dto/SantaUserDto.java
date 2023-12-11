@@ -3,7 +3,7 @@ package com.dearsanta.app.dto;
 
 import com.dearsanta.app.domain.SantaUser;
 import com.dearsanta.app.domain.enumtype.Nickname;
-import com.dearsanta.app.domain.enumtype.Platform;
+import com.dearsanta.app.domain.enumtype.OauthProvider;
 import com.dearsanta.app.domain.enumtype.Role;
 import lombok.*;
 
@@ -33,7 +33,7 @@ public class SantaUserDto {
                 .nickname(Nickname.getRandomNickname())
                 .role(Role.ROLE_USER.toString())
                 .imgUrl(this.getImgUrl())
-                .platform(Platform.KAKAO.toString())
+                .platform(OauthProvider.KAKAO.toString())
                 .createdDate(this.getCreatedDate())
                 .updatedDate(this.getUpdatedDate())
                 .isDeleted(this.getIsDeleted())
