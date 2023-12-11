@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/categories")
+@RequestMapping("/api/v1/categories")
 @RestController
 public class BoardCategoryController {
 

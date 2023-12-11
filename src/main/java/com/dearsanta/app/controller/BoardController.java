@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
-@RequestMapping("/board")
+@RequestMapping("/api/v1/board")
 @RestController
 @Log4j
 public class BoardController {
