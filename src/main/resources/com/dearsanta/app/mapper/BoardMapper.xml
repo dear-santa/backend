@@ -89,4 +89,37 @@
         SET     view_count = view_count + 1
         WHERE   id = #{boardId}
     </update>
+    <update id="increaseLikeCount" parameterType="java.lang.String">
+        UPDATE  board
+        SET     like_count = like_count + 1
+        WHERE   id = #{boardId}
+    </update>
+    <update id="decreaseLikeCount" parameterType="java.lang.String">
+        UPDATE  board
+        SET     like_count = like_count - 1
+        WHERE   id = #{boardId}
+    </update>
+
+    <insert id="boardLike">
+        INSERT INTO board_like (
+            id,
+            board_id,
+            user_id
+        ) VALUES (
+                  #{id, jdbcType=VARCHAR},
+                  #{boardId, jdbcType=VARCHAR},
+                  #{userId, jdbcType=VARCHAR}
+        )
+    </insert>
+    <delete id="boardUnlike">
+        DELETE FROM board_like
+        WHERE       id = #{likeId}
+    </delete>
+
+    <select id="findLikeId" parameterType="java.lang.String">
+        SELECT  id
+        FROM    board_like
+        WHERE   board_id = #{boardId}
+        AND     user_id = #{userId}
+    </select>
 </mapper>
