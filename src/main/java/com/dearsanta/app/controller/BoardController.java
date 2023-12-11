@@ -2,6 +2,7 @@ package com.dearsanta.app.controller;
 
 import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
+import com.dearsanta.app.dto.BoardLikeDto;
 import com.dearsanta.app.dto.BoardRequestDto;
 import com.dearsanta.app.dto.BoardListDto;
 import com.dearsanta.app.service.BoardService;
@@ -92,6 +93,42 @@ public class BoardController {
         boardService.deleteBoard(boardId);
         log.info("deleteBoard: " + boardId);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{boardId}/like")
+    public ResponseEntity<Void> likeBoard (
+            @PathVariable("boardId") String boardId,
+            HttpSession session
+    ) {
+        Object userId = session.getAttribute("userId");
+        if (userId == null) {
+            throw new RuntimeException("권한이 없습니다.");
+        }
+        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                .userId(userId.toString())
+                .boardId(boardId)
+                .build();
+        boardService.likeBoard(boardLikeDto);
+        log.info("like board: " + boardId);
+        return null;
+    }
+
+    @PostMapping("/{boardId}/unlike")
+    public ResponseEntity<Void> unlikeBoard (
+            @PathVariable("boardId") String boardId,
+            HttpSession session
+    ) {
+        Object userId = session.getAttribute("userId");
+        if (userId == null) {
+            throw new RuntimeException("권한이 없습니다.");
+        }
+        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                .userId(userId.toString())
+                .boardId(boardId)
+                .build();
+        boardService.unlikeBoard(boardLikeDto);
+        log.info("unlike board: " + boardId);
+        return null;
     }
 
     @GetMapping("/{mainCategory}/{subCategory}")

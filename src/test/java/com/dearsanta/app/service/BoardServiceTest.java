@@ -2,6 +2,7 @@ package com.dearsanta.app.service;
 
 import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
+import com.dearsanta.app.dto.BoardLikeDto;
 import com.dearsanta.app.dto.BoardListDto;
 import com.dearsanta.app.dto.BoardRequestDto;
 import lombok.extern.log4j.Log4j;
@@ -120,5 +121,26 @@ public class BoardServiceTest {
                 .userId(userId)
                 .build();
         boardService.updateBoard(boardId, boardRequestDto, null);
+    }
+
+    @DisplayName("게시글을 좋아요합니다.")
+    @Test
+    public void likeBoard() {
+        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                .userId("Test User 1")
+                .boardId("54c57f8a-705b-4571-92d6-a909619bc006")
+                .build();
+        boardService.likeBoard(boardLikeDto);
+    }
+
+    @DisplayName("게시글을 좋아요 취소합니다.")
+    @Test
+    public void unlikeBoard() {
+        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                .id("b70f52ee-f3d0-40fb-9799-4fea409fd9f3")
+                .userId("Test User 1")
+                .boardId("54c57f8a-705b-4571-92d6-a909619bc006")
+                .build();
+        boardService.unlikeBoard(boardLikeDto);
     }
 }

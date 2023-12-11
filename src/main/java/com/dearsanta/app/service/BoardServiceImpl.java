@@ -2,10 +2,7 @@ package com.dearsanta.app.service;
   
 import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.domain.Board;
-import com.dearsanta.app.dto.BoardDto;
-import com.dearsanta.app.dto.BoardRequestDto;
-import com.dearsanta.app.dto.BoardListDto;
-import com.dearsanta.app.dto.Criteria;
+import com.dearsanta.app.dto.*;
 import com.dearsanta.app.mapper.BoardCategoryMapper;
 import com.dearsanta.app.mapper.BoardMapper;
 import com.dearsanta.app.util.AWSS3;
@@ -23,7 +20,7 @@ import java.util.NoSuchElementException;
 
 @Log4j
 @Service
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private BoardMapper boardMapper;
@@ -60,7 +57,7 @@ public class BoardServiceImpl implements BoardService{
     public void createBoard(BoardRequestDto boardRequestDto, MultipartFile boardImage) {
         boardRequestDto.setId(UUID.randomUUID().toString());
         if (boardImage != null) {
-            String imgUrl= aWSS3.uploadImage(boardRequestDto.getId(), boardImage);
+            String imgUrl = aWSS3.uploadImage(boardRequestDto.getId(), boardImage);
             boardRequestDto.setImgUrl(imgUrl);
         }
         boardMapper.createBoard(boardRequestDto);
@@ -82,7 +79,7 @@ public class BoardServiceImpl implements BoardService{
         Board updateBoard = boardRequestDto.toEntity();
         if (boardImage != null) {
             // TODO: S3에 있는 기존 이미지 삭제 (지금은 그냥 덮어씌움)
-            String imgUrl= aWSS3.uploadImage(boardId, boardImage);
+            String imgUrl = aWSS3.uploadImage(boardId, boardImage);
             updateBoard.setImgUrl(imgUrl);
         }
         board.update(updateBoard);
@@ -92,5 +89,27 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public void deleteBoard(String boardId) {
         boardMapper.deleteBoard(boardId);
+    }
+
+    @Override
+    public void likeBoard(BoardLikeDto boardLikeDto) {
+        BoardDto board = boardMapper.getBoard(boardLikeDto.getBoardId());
+        if (board == null) {
+            throw new NoSuchElementException("존재하지 않는 게시글입니다.");
+        }
+        boardLikeDto.setId(UUID.randomUUID().toString());
+        boardMapper.boardLike(boardLikeDto);
+        boardMapper.increaseLikeCount(boardLikeDto.getBoardId());
+    }
+
+    @Override
+    public void unlikeBoard(BoardLikeDto boardLikeDto) {
+        BoardDto board = boardMapper.getBoard(boardLikeDto.getBoardId());
+        if (board == null) {
+            throw new NoSuchElementException("존재하지 않는 게시글입니다.");
+        }
+        String likeId = boardMapper.findLikeId(board.getId(), boardLikeDto.getUserId());
+        boardMapper.boardUnlike(likeId);
+        boardMapper.decreaseLikeCount(board.getId());
     }
 }

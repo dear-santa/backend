@@ -3,6 +3,7 @@ package com.dearsanta.app.mapper;
 import com.dearsanta.app.domain.Board;
 import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
+import com.dearsanta.app.dto.BoardLikeDto;
 import com.dearsanta.app.dto.BoardRequestDto;
 import com.dearsanta.app.dto.Criteria;
 import org.junit.Test;
@@ -85,5 +86,37 @@ public class BoardMapperTest {
         // 삭제할 게시글이 있는지 확인 후 테스트
         String boardId = "bd4d1fd6-a33b-4e69-9f89-b36f2d18a91d";
         boardMapper.deleteBoard(boardId);
+    }
+
+    @DisplayName("게시물의 좋아요 수를 증가시킵니다.")
+    @Test
+    public void increaseLikeCount() {
+        String boardId = "bd4d1fd6-a33b-4e69-9f89-b36f2d18a91d";
+        boardMapper.increaseLikeCount(boardId);
+    }
+
+    @DisplayName("게시물의 좋아요 수를 감소시킵니다.")
+    @Test
+    public void decreaseLikeCount() {
+        String boardId = "bd4d1fd6-a33b-4e69-9f89-b36f2d18a91d";
+        boardMapper.decreaseLikeCount(boardId);
+    }
+
+    @DisplayName("게시물의 좋아요를 누릅니다.")
+    @Test
+    public void boardLike() {
+        String id = "will be set as a random id";
+        String userId = "test user";
+        String boardId = "bd4d1fd6-a33b-4e69-9f89-b36f2d18a91d";
+        BoardLikeDto boardLikeDto = new BoardLikeDto(id, userId, boardId);
+
+        boardMapper.boardLike(boardLikeDto);
+    }
+
+    @DisplayName("게시물의 좋아요를 취소합니다.")
+    @Test
+    public void boardUnlike() {
+        String likeId = "will be set as a random id";
+        boardMapper.boardUnlike(likeId);
     }
 }
