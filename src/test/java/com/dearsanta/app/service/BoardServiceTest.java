@@ -3,6 +3,7 @@ package com.dearsanta.app.service;
 import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
 import com.dearsanta.app.dto.BoardListDto;
+import com.dearsanta.app.dto.BoardRequestDto;
 import lombok.extern.log4j.Log4j;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -78,5 +79,46 @@ public class BoardServiceTest {
         BoardDto secondBoardDto = boardList.get(0);
 
         Assertions.assertTrue(firstBoardDto.getLikeCount() >= secondBoardDto.getLikeCount());
+    }
+
+    @DisplayName("게시물을 생성합니다.")
+    @Test
+    public void createBoard() {
+        String boardCategoryId = "2";
+        String title = "제목";
+        String content = "내용";
+        String userId = "test user";
+        BoardRequestDto boardRequestDto = BoardRequestDto.builder()
+                .boardCategoryId(boardCategoryId)
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .build();
+        boardService.createBoard(boardRequestDto, null);
+    }
+
+    @DisplayName("게시물을 상세조회합니다. 게시글이 존재할 경우")
+    @Test
+    public void getBoard() {
+        String boardId = "1";
+        BoardDto boardDto = boardService.getBoard(boardId);
+        Assertions.assertNotNull(boardDto);
+    }
+
+    @DisplayName("게시글을 수정합니다")
+    @Test
+    public void updateBoard() {
+        String boardId = "1";
+        String boardCategoryId = "4";
+        String title = "제목";
+        String content = "내용";
+        String userId = "User1";
+        BoardRequestDto boardRequestDto = BoardRequestDto.builder()
+                .boardCategoryId(boardCategoryId)
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .build();
+        boardService.updateBoard(boardId, boardRequestDto, null);
     }
 }
