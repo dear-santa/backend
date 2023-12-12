@@ -39,6 +39,7 @@
               , #{role, jdbcType=VARCHAR}
               , #{imgUrl, jdbcType=VARCHAR}
               , #{platform, jdbcType=VARCHAR}
+              , 0
                )
     </insert>
 
