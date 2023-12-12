@@ -2,9 +2,11 @@ package com.dearsanta.app.auth;
 
 import com.dearsanta.app.domain.enumtype.OauthProvider;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+@Setter
 @Getter
 public class KakaoParams implements OauthParams{
     // Controller에서 Post요청으로 전달된 파라미터
@@ -23,12 +25,4 @@ public class KakaoParams implements OauthParams{
         return body;
     }
 
-    @Override
-    public String getAuthorizationCode() {
-        return authorizationCode;
-    }
-
-    public void setAuthorizationCode(String authorizationCode) {
-        this.authorizationCode = authorizationCode;
-    }
 }

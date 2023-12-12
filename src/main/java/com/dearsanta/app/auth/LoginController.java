@@ -13,21 +13,40 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     @Autowired
-    private OAuth2Service oauthService;
+    private OAuthService oauthService;
 
-    @PostMapping ("/oauth/kakao")
-    public ResponseEntity<String> handleKakaoLogin(@RequestParam KakaoParams kakaoParams) {
-                                                   
-        log.debug("넘겨받은 Kakao 인증키 :: " + kakaoParams.getAuthorizationCode());
+//    @PostMapping ("/oauth/kakao")
+//    public ResponseEntity<String> handleKakaoLogin(@RequestBody KakaoParams kakaoParams) {
+//
+//        log.debug("넘겨받은 Kakao 인증키 :: " + kakaoParams.getAuthorizationCode());
+//
+//        //JWT 토큰 발급
+//        String accessToken = oauthService.getMemberByOauthLogin(kakaoParams);
+//        //응답 헤더 생성
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("accessToken", accessToken);
+//
+//        return ResponseEntity.ok().headers(headers).body("Response with header using ResponseEntity");
+//    }
 
+    @GetMapping ("/oauth/kakao")
+    public ResponseEntity<String> handleKakaoLogin(@RequestParam("code") String code) {
+
+        log.debug("넘겨받은 Kakao 인증키 :: " + code);
+
+        KakaoParams kakaoParams = new KakaoParams();
+        kakaoParams.setAuthorizationCode(code);
         //JWT 토큰 발급
         String accessToken = oauthService.getMemberByOauthLogin(kakaoParams);
+
         //응답 헤더 생성
         HttpHeaders headers = new HttpHeaders();
+
         headers.set("accessToken", accessToken);
 
-        return ResponseEntity.ok().headers(headers).body("Response with header using ResponseEntity");
+        return ResponseEntity.ok().headers(headers).body("반갑습니다");
     }
-    
+
+
 
 }
