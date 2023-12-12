@@ -29,7 +29,6 @@ public class JwtProvider {
         /* 토큰이 보관할 회원ID */
         Claims claims = Jwts.claims();
         claims.put("memberId", userId); //비공개 클레임 등록
-        System.out.println("여기서 환경변수 " + applicationProperties.getSECRET_KEY());
         return Jwts.builder().setHeaderParam("typ", "JWT") // 토큰 타입 지정
                 .setSubject("accessToken") // 토큰 제목
                 .setIssuedAt(now) // 발급시간
