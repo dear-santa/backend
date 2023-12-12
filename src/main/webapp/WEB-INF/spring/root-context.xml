@@ -36,11 +36,8 @@
 	<bean id="applicationProperties" class="com.dearsanta.app.config.ApplicationProperties">
 		<property name="DOMAIN" value="${front.domain}" />
 		<property name="FRONT_LOCAL_URL" value="${front.local.url}" />
-		<property name="SECRET_KEY" value="${spring.jwt.secret.key}" />
-		<property name="KAKAO_TOKEN_URL" value="${spring.social.kakao.token_url}" />
-		<property name="KAKAO_USER_URL" value="${spring.social.kakao.user_url}" />
-		<property name="KAKAO_CLIENT_ID" value="${spring.social.kakao.client_id}" />
-		<property name="KAKAO_REDIRECT_URI" value="${spring.social.kakao.redirect_uri}" />
+		<property name="KAKAO_CLIENT_ID" value="${spring.social.kakao.client_id}"/>
+		<property name="KAKAO_REDIRECT_URI" value="${spring.social.kakao.redirect_uri}"/>
 	</bean>
 
 
