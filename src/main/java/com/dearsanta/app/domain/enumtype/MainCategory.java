@@ -1,4 +1,4 @@
-package com.dearsanta.app.domain;
+package com.dearsanta.app.domain.enumtype;
 
 import com.dearsanta.app.dto.MainCategoryDto;
 import lombok.AllArgsConstructor;

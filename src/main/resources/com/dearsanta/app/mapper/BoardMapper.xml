@@ -47,36 +47,104 @@
         SET     is_deleted = 1
         WHERE   id = #{boardId}
     </delete>
-    <select id="getBoardListWithPaging" parameterType="com.dearsanta.app.dto.Criteria" resultType="com.dearsanta.app.dto.BoardDto">
+
+    <select id="getBoardListByMainAndSubCategory" parameterType="com.dearsanta.app.dto.criteria.BoardCriteria" resultType="com.dearsanta.app.dto.BoardDto">
         <![CDATA[
-		SELECT  id,
+        SELECT
+            id,
+            title,
+            content,
+            created_date AS createdDate,
+            updated_date AS updatedDate,
+            user_id AS userId,
+            img_url AS imgUrl,
+            like_count AS likeCount,
+            view_count AS viewCount
+        FROM
+            (
+            SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
+                rownum AS rn,
+                id,
                 title,
                 content,
-                created_date AS createdDate,
-                updated_date AS updatedDate,
-                user_id AS userId,
-                img_url AS imgUrl,
-                like_count AS likeCount,
-                view_count AS viewCount
-		FROM
-			(
-			SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
-                    rownum AS rn,
-                    id,
-                    title,
-                    content,
-                    created_date,
-                    updated_date,
-                    user_id,
-                    img_url,
-                    like_count,
-                    view_count
-			FROM    board
-			WHERE   board_category_id = #{criteria.selectId}
-			AND     rownum <= #{criteria.pageNum} * #{criteria.pageSize}
-			)
-		WHERE rn > (#{criteria.pageNum}-1) * #{criteria.pageSize}
-		]]>
+                created_date,
+                updated_date,
+                user_id,
+                img_url,
+                like_count,
+                view_count
+            FROM board
+            WHERE main_category = #{criteria.mainCategory}
+            AND sub_category = #{criteria.subCategory}
+            AND rownum <= #{criteria.pageNum} * #{criteria.pageSize}
+            )
+        WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
+        ]]>
+    </select>
+
+    <select id="getBoardListByMainCategory" parameterType="com.dearsanta.app.dto.criteria.BoardCriteria" resultType="com.dearsanta.app.dto.BoardDto">
+        <![CDATA[
+        SELECT
+            id,
+            title,
+            content,
+            created_date AS createdDate,
+            updated_date AS updatedDate,
+            user_id AS userId,
+            img_url AS imgUrl,
+            like_count AS likeCount,
+            view_count AS viewCount
+        FROM
+            (
+            SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
+                rownum AS rn,
+                id,
+                title,
+                content,
+                created_date,
+                updated_date,
+                user_id,
+                img_url,
+                like_count,
+                view_count
+            FROM board
+            WHERE main_category = #{criteria.mainCategory}
+            AND rownum <= #{criteria.pageNum} * #{criteria.pageSize}
+            )
+        WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
+        ]]>
+    </select>
+
+    <select id="getBoardListAll" parameterType="com.dearsanta.app.dto.criteria.BoardCriteria" resultType="com.dearsanta.app.dto.BoardDto">
+        <![CDATA[
+        SELECT
+            id,
+            title,
+            content,
+            created_date AS createdDate,
+            updated_date AS updatedDate,
+            user_id AS userId,
+            img_url AS imgUrl,
+            like_count AS likeCount,
+            view_count AS viewCount
+        FROM
+            (
+            SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
+                rownum AS rn,
+                id,
+                title,
+                content,
+                created_date,
+                updated_date,
+                user_id,
+                img_url,
+                like_count,
+                view_count
+            FROM board
+            WHERE rownum <= #{criteria.pageNum} * #{criteria.pageSize}
+            )
+        WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
+        ]]>
     </select>
 
     <update id="increaseReplyCount" parameterType="java.lang.String">

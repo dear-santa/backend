@@ -3,6 +3,7 @@ package com.dearsanta.app.service;
 import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.domain.Board;
 import com.dearsanta.app.dto.*;
+import com.dearsanta.app.dto.criteria.BoardCriteria;
 import com.dearsanta.app.mapper.BoardCategoryMapper;
 import com.dearsanta.app.mapper.BoardMapper;
 import com.dearsanta.app.util.AWSS3;
@@ -16,7 +17,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Log4j
 @Service
@@ -31,12 +31,33 @@ public class BoardServiceImpl implements BoardService {
     public BoardListDto getBoardListWithPaging(
             String mainCategory, String subCategory, int pageNum, int pageSize, Sorted sorted
     ) {
-        String categoryId = findBoardCategoryId(mainCategory, subCategory);
-        Criteria criteria = new Criteria(categoryId, pageNum, pageSize, sorted.getIndexColumn());
+        log.info("mainCategory :" + mainCategory + " subCategory :" + subCategory);
         log.info("pageNum:" + pageNum + " pageSize: " + pageSize + " sort: " + sorted.getIndexColumn());
+        List<BoardDto> boardDtos = getBoardListDtoByCriteria(mainCategory, subCategory, pageNum, pageSize, sorted);
 
-        List<BoardDto> boardDtos = boardMapper.getBoardListWithPaging(criteria);
         return new BoardListDto(boardDtos);
+    }
+
+    private List<BoardDto> getBoardListDtoByCriteria(String mainCategory, String subCategory, int pageNum, int pageSize, Sorted sorted) {
+
+        BoardCriteria criteria = BoardCriteria.builder()
+                .mainCategory(mainCategory)
+                .subCategory(subCategory)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .sorted(sorted.getIndexColumn())
+                .build();
+
+        if (mainCategory.equals("HOME")) {
+            log.info("getBoardListAll");
+            return boardMapper.getBoardListAll(criteria);
+        }
+        if (subCategory.equals("NONE")) {
+            log.info("getBoardListByMainCategory");
+            return boardMapper.getBoardListByMainCategory(criteria);
+        }
+        log.info("getBoardListByMainAndSubCategory");
+        return boardMapper.getBoardListByMainAndSubCategory(criteria);
     }
 
     @Override

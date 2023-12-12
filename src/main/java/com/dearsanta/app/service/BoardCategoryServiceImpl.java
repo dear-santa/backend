@@ -1,7 +1,7 @@
 package com.dearsanta.app.service;
 
 import com.dearsanta.app.domain.BoardCategory;
-import com.dearsanta.app.domain.MainCategory;
+import com.dearsanta.app.domain.enumtype.MainCategory;
 import com.dearsanta.app.mapper.BoardCategoryMapper;
 import com.dearsanta.app.dto.MainCategoryDto;
 import com.dearsanta.app.dto.MainCategoriesDto;

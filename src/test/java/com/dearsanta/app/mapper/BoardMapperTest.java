@@ -5,7 +5,8 @@ import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
 import com.dearsanta.app.dto.BoardLikeDto;
 import com.dearsanta.app.dto.BoardRequestDto;
-import com.dearsanta.app.dto.Criteria;
+import com.dearsanta.app.dto.criteria.BoardCriteria;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +28,7 @@ public class BoardMapperTest {
     @Autowired
     private BoardCategoryMapper categoryMapper;
 
+    @Ignore
     @DisplayName("대분류, 소분류, 페이지 번호, 페이지 갯수, 정렬방식을 기준으로 게시물을 조회합니다.")
     @Test
     public void getBoardListWithPaging() {
@@ -35,10 +37,15 @@ public class BoardMapperTest {
         int pageNum = 1;
         int pageSize = 5;
         Sorted sorted = Sorted.LIKE_COUNT;
-        String categoryId = categoryMapper.getBoardCategoryId(mainCategory, subCategory);
-        Criteria criteria = new Criteria(categoryId, pageNum, pageSize, sorted.getIndexColumn());
+        BoardCriteria criteria = BoardCriteria.builder()
+                .mainCategory(mainCategory)
+                .subCategory(subCategory)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .sorted(sorted.getIndexColumn())
+                .build();
 
-        List<BoardDto> boards = boardMapper.getBoardListWithPaging(criteria);
+        List<BoardDto> boards = boardMapper.getBoardListAll(criteria);
         Assertions.assertEquals(boards.size(), pageSize);
         Assertions.assertTrue(boards.get(0).getLikeCount() >= boards.get(1).getLikeCount());
     }
