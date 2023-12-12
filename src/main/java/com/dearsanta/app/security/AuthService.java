@@ -8,7 +8,6 @@ import com.dearsanta.app.security.dto.LoginRequestDto;
 import com.dearsanta.app.security.dto.LoginResponseDto;
 import com.dearsanta.app.security.dto.OAuthType;
 import com.dearsanta.app.security.dto.TokenDto;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;

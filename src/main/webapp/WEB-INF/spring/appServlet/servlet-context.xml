@@ -25,6 +25,13 @@
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</beans:bean>
 
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:bean id="jwtInterceptor" class="com.dearsanta.app.security.JwtInterceptor" />
+		</interceptor>
+	</interceptors>
+
 	<context:component-scan base-package="com.dearsanta.app" />
 
 </beans:beans>
