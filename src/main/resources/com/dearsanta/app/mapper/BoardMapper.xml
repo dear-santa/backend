@@ -9,14 +9,14 @@
             board_category_id,
             title,
             content,
-            user_id,
+            member_id,
             img_url
         ) VALUES (
                      #{id, jdbcType=VARCHAR},
                      #{boardCategoryId, jdbcType=VARCHAR},
                      #{title, jdbcType=VARCHAR},
                      #{content, jdbcType=VARCHAR},
-                     #{userId, jdbcType=VARCHAR},
+                     #{memberId, jdbcType=VARCHAR},
                      #{imgUrl, jdbcType=VARCHAR}
                  )
     </insert>
@@ -35,10 +35,8 @@
                 board.view_count AS viewCount,
                 board.reply_count AS replyCount
         FROM    board
-        LEFT    JOIN member
-        ON      board.user_id = member.id
-        WHERE   board.id = #{boardId}
-        AND     board.is_deleted = 0
+        WHERE   id = #{boardId}
+        AND     is_deleted = 0
     </select>
     <update id="updateBoard" parameterType="com.dearsanta.app.domain.Board">
         UPDATE  board
@@ -54,6 +52,39 @@
         WHERE   id = #{boardId}
     </delete>
 
+    <select id="getBoardListByMemberId" parameterType="com.dearsanta.app.dto.Criteria" resultType="com.dearsanta.app.dto.BoardDto">
+        <![CDATA[
+        SELECT
+            id,
+            title,
+            content,
+            created_date AS createdDate,
+            updated_date AS updatedDate,
+            member_id AS memberId,
+            img_url AS imgUrl,
+            like_count AS likeCount,
+            view_count AS viewCount
+        FROM
+            (
+            SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
+                rownum AS rn,
+                id,
+                title,
+                content,
+                created_date,
+                updated_date,
+                member_id,
+                img_url,
+                like_count,
+                view_count
+            FROM board
+            WHERE member_id = #{criteria.selectId, jdbcType=VARCHAR}
+            AND rownum <= #{criteria.pageNum} * #{criteria.pageSize}
+            )
+        WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
+        ]]>
+    </select>
+
     <select id="getBoardListByMainAndSubCategory" parameterType="com.dearsanta.app.dto.criteria.BoardCriteria" resultType="com.dearsanta.app.dto.BoardDto">
         <![CDATA[
         SELECT
@@ -62,7 +93,7 @@
             content,
             created_date AS createdDate,
             updated_date AS updatedDate,
-            user_id AS userId,
+            member_id AS memberId,
             img_url AS imgUrl,
             like_count AS likeCount,
             view_count AS viewCount,
@@ -76,7 +107,7 @@
                 content,
                 created_date,
                 updated_date,
-                user_id,
+                member_id,
                 img_url,
                 like_count,
                 view_count
@@ -97,7 +128,7 @@
             content,
             created_date AS createdDate,
             updated_date AS updatedDate,
-            user_id AS userId,
+            member_id AS memberId,
             img_url AS imgUrl,
             like_count AS likeCount,
             view_count AS viewCount,
@@ -111,7 +142,7 @@
                 content,
                 created_date,
                 updated_date,
-                user_id,
+                member_id,
                 img_url,
                 like_count,
                 view_count
@@ -131,7 +162,7 @@
             content,
             created_date AS createdDate,
             updated_date AS updatedDate,
-            user_id AS userId,
+            member_id AS memberId,
             img_url AS imgUrl,
             like_count AS likeCount,
             view_count AS viewCount,
@@ -145,7 +176,7 @@
                 content,
                 created_date,
                 updated_date,
-                user_id,
+                member_id,
                 img_url,
                 like_count,
                 view_count
@@ -181,11 +212,11 @@
         INSERT INTO board_like (
             id,
             board_id,
-            user_id
+            member_id
         ) VALUES (
                   #{id, jdbcType=VARCHAR},
                   #{boardId, jdbcType=VARCHAR},
-                  #{userId, jdbcType=VARCHAR}
+                  #{memberId, jdbcType=VARCHAR}
         )
     </insert>
     <delete id="boardUnlike">
@@ -197,6 +228,6 @@
         SELECT  id
         FROM    board_like
         WHERE   board_id = #{boardId}
-        AND     user_id = #{userId}
+        AND     member_id = #{memberId}
     </select>
 </mapper>

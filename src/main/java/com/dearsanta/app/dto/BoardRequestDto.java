@@ -23,7 +23,7 @@ public class BoardRequestDto {
                 .boardCategoryId(boardCategoryId)
                 .title(title)
                 .content(content)
-                .userId(userId)
+                .memberId(userId)
                 .imgUrl(imgUrl)
                 .build();
     }

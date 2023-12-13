@@ -16,7 +16,7 @@ public class Board {
     private String content;
     private Date createdDate;
     private Date updatedDate;
-    private String userId;
+    private String memberId;
     private String imgUrl;
     private int likeCount;
     private int replyCount;

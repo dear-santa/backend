@@ -12,7 +12,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 @Log4j
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1")
 @RestController
 public class AuthController {
 
@@ -33,7 +33,7 @@ public class AuthController {
         return new ResponseEntity(loginResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/test/save")
+    @GetMapping("/auth/test/save")
     public ResponseEntity<LoginResponseDto> email() {
         log.info("/test");
         LoginResponseDto loginResponseDto = authService.joinByEmail("myemail@test.com");
@@ -41,7 +41,7 @@ public class AuthController {
         return new ResponseEntity(loginResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/test/member")
+    @GetMapping("/auth/test/member")
     public ResponseEntity<String> getMemberInfo(
     ) {
         String resolvedMemberId = (String) RequestContextHolder

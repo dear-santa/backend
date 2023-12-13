@@ -65,4 +65,81 @@
             #{refreshToken}
         )
     </insert>
+
+    <select id="getUser" resultType="Member">
+        SELECT id
+        , email
+        , nickname
+        , role
+        , img_url AS "imgUrl"
+        , platform
+        , created_date AS "createdDate"
+        , updated_date AS "updatedDate"
+        , IS_DELETED AS "isDeleted"
+        FROM   member
+        WHERE  id = #{id}
+    </select>
+
+    <select id="getMemberList" resultType="Member">
+        SELECT id
+        , email
+        , nickname
+        , role
+        , img_url AS "imgUrl"
+        , platform
+        , created_date AS "createdDate"
+        , updated_date AS "updatedDate"
+        , IS_DELETED AS "isDeleted"
+        FROM   member
+    </select>
+
+    <insert id="insertMember" parameterType="Member">
+        INSERT INTO member (id, email, nickname, role, img_url, platform, is_deleted)
+        VALUES (
+        #{id}
+        , #{email, jdbcType=VARCHAR}
+        , #{nickname, jdbcType=VARCHAR}
+        , #{role, jdbcType=VARCHAR}
+        , #{imgUrl, jdbcType=VARCHAR}
+        , #{platform, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateMember" parameterType="Member">
+        UPDATE member
+        SET nickname = #{nickname, jdbcType=VARCHAR}
+        , img_url = #{imgUrl, jdbcType=VARCHAR}
+        , updated_date = sysdate
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDeletedMember" parameterType="Member">
+        UPDATE member
+        SET is_deleted = 0
+        , nickname = #{nickname, jdbcType=VARCHAR}
+        , updated_date = sysdate
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteMember" parameterType="Member">
+        UPDATE member
+        SET is_deleted = 1
+        , updated_date = sysdate
+        WHERE id = #{id}
+    </delete>
+
+    <select id="getMemberByEmail" resultType="Member">
+        SELECT id
+        , email
+        , nickname
+        , role
+        , img_url AS "imgUrl"
+        , platform
+        , created_date AS "createdDate"
+        , updated_date AS "updatedDate"
+        , IS_DELETED AS "isDeleted"
+        FROM   member
+        WHERE  email like #{email}
+    </select>
+
 </mapper>

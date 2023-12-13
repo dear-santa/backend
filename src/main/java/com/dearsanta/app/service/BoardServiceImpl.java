@@ -63,6 +63,20 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public BoardListDto getBoardListOfMyPageWithPaging(String memberId, int pageNum, int pageSize, Sorted sorted) {
+
+        Criteria criteria = Criteria.builder()
+                .selectId(memberId)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .sorted(sorted.getIndexColumn())
+                .build();
+
+        List<BoardDto> boardDtos = boardMapper.getBoardListByMemberId(criteria);
+        return new BoardListDto(boardDtos);
+    }
+
+    @Override
     public String findBoardCategoryId(String mainCategory, String subCategory) {
         String categoryId = boardCategoryMapper.getBoardCategoryId(mainCategory, subCategory);
         log.info("{mainCategory: " + mainCategory + ", subCategory: " + subCategory + "} => categoryId=" + categoryId);

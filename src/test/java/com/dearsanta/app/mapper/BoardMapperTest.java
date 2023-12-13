@@ -5,7 +5,9 @@ import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
 import com.dearsanta.app.dto.BoardLikeDto;
 import com.dearsanta.app.dto.BoardRequestDto;
+import com.dearsanta.app.dto.Criteria;
 import com.dearsanta.app.dto.criteria.BoardCriteria;
+import lombok.extern.log4j.Log4j;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
+@Log4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({ "file:src/main/webapp/WEB-INF/spring/root-context.xml"})
@@ -64,6 +67,19 @@ public class BoardMapperTest {
         boardMapper.createBoard(boardRequestDto);
     }
 
+    @Ignore
+    @DisplayName("내가 쓴 글을 조회합니다.")
+    @Test
+    public void getBoardOfMyPage() {
+        String memberId = "1261e608-0ac7-4412-8ab3-048596060ef5";
+        Criteria criteria = Criteria.builder()
+                .selectId(memberId)
+                .build();
+        List<BoardDto> boardDtos = boardMapper.getBoardListByMemberId(criteria);
+
+        Assertions.assertEquals(boardDtos.get(0).getMemberId(), memberId);
+    }
+
     @DisplayName("게시물을 조회합니다.")
     @Test
     public void getBoard() {
@@ -79,9 +95,9 @@ public class BoardMapperTest {
         String boardCategoryId = "3";
         String title = "테스트 게시물 제목 수정";
         String content = "테스트 게시물 내용 수정";
-        String userId = "test user";
+        String memberId = "test user";
         String imgUrl = "img url";
-        BoardRequestDto boardRequestDto = new BoardRequestDto(id, boardCategoryId, title, content, userId, imgUrl);
+        BoardRequestDto boardRequestDto = new BoardRequestDto(id, boardCategoryId, title, content, memberId, imgUrl);
         Board board = boardRequestDto.toEntity();
 
         boardMapper.updateBoard(board);
@@ -113,9 +129,9 @@ public class BoardMapperTest {
     @Test
     public void boardLike() {
         String id = "will be set as a random id";
-        String userId = "test user";
+        String memberId = "test user";
         String boardId = "bd4d1fd6-a33b-4e69-9f89-b36f2d18a91d";
-        BoardLikeDto boardLikeDto = new BoardLikeDto(id, userId, boardId);
+        BoardLikeDto boardLikeDto = new BoardLikeDto(id, memberId, boardId);
 
         boardMapper.boardLike(boardLikeDto);
     }
