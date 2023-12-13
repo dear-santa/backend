@@ -35,21 +35,27 @@
         <![CDATA[
         SELECT  /*+ INDEX_ASC(board ${criteria.sorted}) */
                 id,
-                user_id AS userId,
-                board_id AS boardId,
+                userId,
+                userNickname,
+                userImgUrl,
+                boardId,
                 content,
-                created_date AS createdDate,
-                updated_date AS updatedDate
+                createDate,
+                updatedDate
         FROM
             (
             SELECT  rownum AS rn,
-                    id,
-                    user_id,
-                    board_id,
-                    content,
-                    created_date,
-                    updated_date
+                    reply.id,
+                    reply.user_id AS userId,
+                    member.nickname AS userNickname,
+                    member.img_url AS userImgUrl,
+                    reply.board_id AS boardId,
+                    reply.content,
+                    reply.created_date AS createDate,
+                    reply.updated_date AS updatedDate
             FROM    reply
+            LEFT    JOIN member
+            ON      reply.user_id = member.id
             WHERE   board_id = #{criteria.selectId}
             AND     ROWNUM <= #{criteria.pageNum} * #{criteria.pageSize}
             )
