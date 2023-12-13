@@ -148,6 +148,19 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(boards);
     }
 
+    @GetMapping(value="/board")
+    public ResponseEntity<BoardListDto> getBoardListWithPagingByKeyword (
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+            @RequestParam(value = "sorted", defaultValue = "LATEST") Sorted sorted
+    ) {
+        BoardListDto boards = boardService.getBoardListWithPagingByKeyword(keyword, pageNum, pageSize, sorted);
+        log.info("getBoardListWithPagingByKeyword " + LocalDateTime.now());
+        log.info("keyword : " + keyword);
+        return ResponseEntity.status(HttpStatus.OK).body(boards);
+    }
+
     @GetMapping("/auth/board")
     public ResponseEntity<BoardListDto> getBoardByMyPage(
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,

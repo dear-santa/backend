@@ -146,4 +146,17 @@ public class BoardServiceImpl implements BoardService {
         boardMapper.boardUnlike(likeId);
         boardMapper.decreaseLikeCount(board.getId());
     }
+
+    @Override
+    public BoardListDto getBoardListWithPagingByKeyword(String keyword, int pageNum, int pageSize, Sorted sorted) {
+        Criteria criteria = Criteria.builder()
+                .selectId(keyword)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .sorted(sorted.getIndexColumn())
+                .build();
+
+        List<BoardDto> boardDtos = boardMapper.getBoardListWithPagingByKeyword(criteria);
+        return new BoardListDto(boardDtos);
+    }
 }

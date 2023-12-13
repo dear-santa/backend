@@ -216,6 +216,52 @@
         ]]>
     </select>
 
+    <select id="getBoardListWithPagingByKeyword" parameterType="com.dearsanta.app.dto.Criteria" resultType="com.dearsanta.app.dto.BoardDto">
+        <![CDATA[
+        SELECT
+            id,
+            title,
+            content,
+            createdDate,
+            updatedDate,
+            userId,
+            userNickname,
+            userImgUrl,
+            isMine,
+            imgUrl,
+            likeCount,
+            viewCount,
+            replyCount
+        FROM
+            (
+            SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
+                    rownum AS rn,
+                    board.id,
+                    board.title,
+                    board.content,
+                    board.created_date AS createdDate,
+                    board.updated_date AS updatedDate,
+                    board.user_id AS userId,
+                    member.nickname AS userNickname,
+                    member.img_url AS userImgUrl,
+                    0 AS isMine,
+                    board.img_url AS imgUrl,
+                    board.like_count AS likeCount,
+                    board.view_count AS viewCount,
+                    board.reply_count AS replyCount
+            FROM    board
+            LEFT    JOIN member
+            ON      board.user_id = member.id
+            WHERE   (board.title LIKE '%' || #{criteria.selectId} || '%'
+            OR      board.content LIKE '%' || #{criteria.selectId} || '%')
+            AND     board.is_deleted = 0
+            AND     rownum <= #{criteria.pageNum} * #{criteria.pageSize}
+            )
+        WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
+        ]]>
+
+    </select>
+
     <update id="increaseReplyCount" parameterType="java.lang.String">
         UPDATE  board
         SET     reply_count = reply_count + 1
