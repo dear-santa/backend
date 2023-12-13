@@ -12,7 +12,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 @Log4j
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auth")
 @RestController
 public class AuthController {
 
