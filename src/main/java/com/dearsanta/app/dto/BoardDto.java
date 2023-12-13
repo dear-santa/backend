@@ -36,7 +36,7 @@ public class BoardDto {
                 .imgUrl(imgUrl)
                 .likeCount(likeCount)
                 .viewCount(viewCount)
-                .viewCount(replyCount)
+                .replyCount(replyCount)
                 .build();
     }
 }

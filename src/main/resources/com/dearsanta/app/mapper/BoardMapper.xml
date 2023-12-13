@@ -63,7 +63,8 @@
             member_id AS memberId,
             img_url AS imgUrl,
             like_count AS likeCount,
-            view_count AS viewCount
+            view_count AS viewCount,
+            reply_count AS replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
@@ -76,7 +77,8 @@
                 member_id,
                 img_url,
                 like_count,
-                view_count
+                view_count,
+                reply_count
             FROM board
             WHERE member_id = #{criteria.selectId, jdbcType=VARCHAR}
             AND rownum <= #{criteria.pageNum} * #{criteria.pageSize}
@@ -91,27 +93,36 @@
             id,
             title,
             content,
-            created_date AS createdDate,
-            updated_date AS updatedDate,
-            member_id AS memberId,
-            img_url AS imgUrl,
-            like_count AS likeCount,
-            view_count AS viewCount,
-            reply_count AS replyCount
+            createdDate,
+            updatedDate,
+            memberId,
+            userNickname,
+            userImgUrl,
+            isMine,
+            imgUrl,
+            likeCount,
+            viewCount,
+            replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
                 rownum AS rn,
-                id,
-                title,
-                content,
-                created_date,
-                updated_date,
-                member_id,
-                img_url,
-                like_count,
-                view_count
+                board.id AS id,
+                board.title AS title,
+                board.content AS content,
+                board.created_date AS createdDate,
+                board.updated_date AS updatedDate,
+                board.member_id AS memberId,
+                member.nickname AS userNickname,
+                member.img_url AS userImgUrl,
+                0 AS isMine,
+                board.img_url AS imgUrl,
+                board.like_count AS likeCount,
+                board.view_count AS viewCount,
+                board.reply_count AS replyCount
             FROM board
+            LEFT JOIN member
+            ON board.member_id = member.id
             WHERE main_category = #{criteria.mainCategory}
             AND sub_category = #{criteria.subCategory}
             AND rownum <= #{criteria.pageNum} * #{criteria.pageSize}
@@ -126,27 +137,36 @@
             id,
             title,
             content,
-            created_date AS createdDate,
-            updated_date AS updatedDate,
-            member_id AS memberId,
-            img_url AS imgUrl,
-            like_count AS likeCount,
-            view_count AS viewCount,
-            reply_count AS replyCount
+            createdDate,
+            updatedDate,
+            memberId,
+            userNickname,
+            userImgUrl,
+            isMine,
+            imgUrl,
+            likeCount,
+            viewCount,
+            replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
                 rownum AS rn,
-                id,
-                title,
-                content,
-                created_date,
-                updated_date,
-                member_id,
-                img_url,
-                like_count,
-                view_count
+                board.id AS id,
+                board.title AS title,
+                board.content AS content,
+                board.created_date AS createdDate,
+                board.updated_date AS updatedDate,
+                board.member_id AS memberId,
+                member.nickname AS userNickname,
+                member.img_url AS userImgUrl,
+                0 AS isMine,
+                board.img_url AS imgUrl,
+                board.like_count AS likeCount,
+                board.view_count AS viewCount,
+                board.reply_count AS replyCount
             FROM board
+            LEFT JOIN member
+            ON board.member_id = member.id
             WHERE main_category = #{criteria.mainCategory}
             AND rownum <= #{criteria.pageNum} * #{criteria.pageSize}
             )
@@ -160,27 +180,36 @@
             id,
             title,
             content,
-            created_date AS createdDate,
-            updated_date AS updatedDate,
-            member_id AS memberId,
-            img_url AS imgUrl,
-            like_count AS likeCount,
-            view_count AS viewCount,
-            reply_count AS replyCount
+            createdDate,
+            updatedDate,
+            memberId,
+            userNickname,
+            userImgUrl,
+            isMine,
+            imgUrl,
+            likeCount,
+            viewCount,
+            replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
                 rownum AS rn,
-                id,
-                title,
-                content,
-                created_date,
-                updated_date,
-                member_id,
-                img_url,
-                like_count,
-                view_count
+                board.id AS id,
+                board.title AS title,
+                board.content AS content,
+                board.created_date AS createdDate,
+                board.updated_date AS updatedDate,
+                board.member_id AS memberId,
+                member.nickname AS userNickname,
+                member.img_url AS userImgUrl,
+                0 AS isMine,
+                board.img_url AS imgUrl,
+                board.like_count AS likeCount,
+                board.view_count AS viewCount,
+                board.reply_count AS replyCount
             FROM board
+            LEFT JOIN member
+            ON board.member_id = member.id
             WHERE rownum <= #{criteria.pageNum} * #{criteria.pageSize}
             )
         WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
