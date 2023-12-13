@@ -32,7 +32,8 @@
                 0 AS isMine,
                 board.img_url AS imgUrl,
                 board.like_count AS likeCount,
-                board.view_count AS viewCount
+                board.view_count AS viewCount,
+                board.reply_count AS replyCount
         FROM    board
         LEFT    JOIN member
         ON      board.user_id = member.id
@@ -64,7 +65,8 @@
             user_id AS userId,
             img_url AS imgUrl,
             like_count AS likeCount,
-            view_count AS viewCount
+            view_count AS viewCount,
+            reply_count AS replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
@@ -98,7 +100,8 @@
             user_id AS userId,
             img_url AS imgUrl,
             like_count AS likeCount,
-            view_count AS viewCount
+            view_count AS viewCount,
+            reply_count AS replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
@@ -131,7 +134,8 @@
             user_id AS userId,
             img_url AS imgUrl,
             like_count AS likeCount,
-            view_count AS viewCount
+            view_count AS viewCount,
+            reply_count AS replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */

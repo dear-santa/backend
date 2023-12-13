@@ -6,7 +6,6 @@ import com.dearsanta.app.dto.*;
 import com.dearsanta.app.dto.criteria.BoardCriteria;
 import com.dearsanta.app.mapper.BoardCategoryMapper;
 import com.dearsanta.app.mapper.BoardMapper;
-import com.dearsanta.app.mapper.UserMapper;
 import com.dearsanta.app.util.AWSS3;
 import lombok.extern.log4j.Log4j;
 
@@ -27,8 +26,6 @@ public class BoardServiceImpl implements BoardService {
     private BoardMapper boardMapper;
     @Autowired
     private BoardCategoryMapper boardCategoryMapper;
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     AWSS3 aWSS3;
 
