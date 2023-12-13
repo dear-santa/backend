@@ -14,6 +14,8 @@ import java.util.Date;
 public class ReplyDto {
     private String id;
     private String userId;
+    private String userNickname;
+    private String userImgUrl;
     private String boardId;
     private String content;
     private Date createdDate;

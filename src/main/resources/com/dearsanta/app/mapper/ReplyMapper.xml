@@ -17,27 +17,34 @@
                  )
     </insert>
     <select id="getReply">
-        SELECT  id,
-                user_id AS userId,
-                board_id AS boardId,
-                content,
-                created_date AS createDate,
-                updated_date AS updatedDate
+        SELECT  reply.id,
+                reply.user_id AS userId,
+                member.nickname AS userNickname,
+                member.img_url AS userImgUrl,
+                reply.board_id AS boardId,
+                reply.content,
+                reply.created_date AS createDate,
+                reply.updated_date AS updatedDate
         FROM    reply
-        WHERE   id = #{replyId}
-        AND     is_deleted = 0
+        LEFT    JOIN member
+        ON      reply.user_id = member.id
+        WHERE   reply.id = #{replyId}
+        AND     reply.is_deleted = 0
     </select>
     <select id="getReplyListWithPaging" parameterType="com.dearsanta.app.dto.Criteria" resultType="com.dearsanta.app.dto.ReplyDto">
         <![CDATA[
-        SELECT  id,
-                user_id AS userId,
-                board_id AS boardId,
-                content,
-                created_date AS createdDate,
-                updated_date AS updatedDate
+        SELECT
+            id,
+            title,
+            content,
+            created_date AS createdDate,
+            updated_date AS updatedDate,
+            user_id AS userId,
+            img_url AS imgUrl,
+            like_count AS likeCount,
+            view_count AS viewCount
         FROM
             (
-
             SELECT  /*+ INDEX_DESC(reply ${criteria.sorted}) */
                     rownum AS rn,
                     id,
@@ -47,6 +54,8 @@
                     created_date,
                     updated_date
             FROM    reply
+            LEFT    JOIN member
+            ON      reply.user_id = member.id
             WHERE   board_id = #{criteria.selectId}
             AND     is_deleted = 0
             AND     ROWNUM <= #{criteria.pageNum} * #{criteria.pageSize}
