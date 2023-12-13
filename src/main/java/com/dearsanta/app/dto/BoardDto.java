@@ -23,6 +23,7 @@ public class BoardDto {
     private String imgUrl;
     private int likeCount;
     private int viewCount;
+    private int replyCount;
 
     public Board toEntity() {
         return Board.builder()
@@ -35,6 +36,7 @@ public class BoardDto {
                 .imgUrl(imgUrl)
                 .likeCount(likeCount)
                 .viewCount(viewCount)
+                .viewCount(replyCount)
                 .build();
     }
 }
