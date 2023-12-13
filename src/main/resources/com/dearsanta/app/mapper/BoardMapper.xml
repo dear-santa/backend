@@ -21,15 +21,19 @@
                  )
     </insert>
     <select id="getBoard" resultType="com.dearsanta.app.dto.BoardDto">
-        SELECT  id,
-                title,
-                content,
-                created_date AS createdDate,
-                updated_date AS updatedDate,
-                member_id AS memberId,
-                img_url AS imgUrl,
-                like_count AS likeCount,
-                view_count AS viewCount
+        SELECT  board.id,
+                board.title,
+                board.content,
+                board.created_date AS createdDate,
+                board.updated_date AS updatedDate,
+                board.user_id AS userId,
+                member.nickname AS userNickname,
+                member.img_url AS userImgUrl,
+                0 AS isMine,
+                board.img_url AS imgUrl,
+                board.like_count AS likeCount,
+                board.view_count AS viewCount,
+                board.reply_count AS replyCount
         FROM    board
         WHERE   id = #{boardId}
         AND     is_deleted = 0
@@ -92,7 +96,8 @@
             member_id AS memberId,
             img_url AS imgUrl,
             like_count AS likeCount,
-            view_count AS viewCount
+            view_count AS viewCount,
+            reply_count AS replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
@@ -126,7 +131,8 @@
             member_id AS memberId,
             img_url AS imgUrl,
             like_count AS likeCount,
-            view_count AS viewCount
+            view_count AS viewCount,
+            reply_count AS replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
@@ -159,7 +165,8 @@
             member_id AS memberId,
             img_url AS imgUrl,
             like_count AS likeCount,
-            view_count AS viewCount
+            view_count AS viewCount,
+            reply_count AS replyCount
         FROM
             (
             SELECT /*+ INDEX_DESC(board ${criteria.sorted}) */
