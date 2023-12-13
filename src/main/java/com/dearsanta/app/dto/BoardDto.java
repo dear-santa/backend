@@ -1,6 +1,7 @@
 package com.dearsanta.app.dto;
 
 import com.dearsanta.app.domain.Board;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,16 +9,21 @@ import java.util.Date;
 
 @Builder
 @Getter
+@AllArgsConstructor
 public class BoardDto {
     private String id;
     private String title;
     private String content;
     private Date createdDate;
     private Date updatedDate;
-    private String memberId;
+    private String userId;
+    private String userNickname;
+    private String userImgUrl;
+    private int isMine;
     private String imgUrl;
     private int likeCount;
     private int viewCount;
+    private int replyCount;
 
     public Board toEntity() {
         return Board.builder()
@@ -26,10 +32,11 @@ public class BoardDto {
                 .content(content)
                 .createdDate(createdDate)
                 .updatedDate(updatedDate)
-                .memberId(memberId)
+                .userId(userId)
                 .imgUrl(imgUrl)
                 .likeCount(likeCount)
                 .viewCount(viewCount)
+                .viewCount(replyCount)
                 .build();
     }
 }
