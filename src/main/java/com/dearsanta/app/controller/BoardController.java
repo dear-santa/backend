@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
-@RequestMapping("/api/v1/board")
+@RequestMapping("/api/v1")
 @RestController
 @Log4j
 public class BoardController {
@@ -27,7 +27,7 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @PostMapping(value="/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="/board/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createBoard(
             @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
             @RequestPart("boardImage") MultipartFile boardImage,
@@ -50,7 +50,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{boardId}")
+    @GetMapping("/board/{boardId}")
     public ResponseEntity<BoardDto> getBoard (
             @PathVariable("boardId") String boardId
     ) {
@@ -59,7 +59,7 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(board);
     }
   
-    @PatchMapping(value="/{boardId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping(value="/board/{boardId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateBoard (
             @PathVariable("boardId") String boardId,
             @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
@@ -82,7 +82,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{boardId}")
+    @DeleteMapping("/board/{boardId}")
     public ResponseEntity<Void> deleteBoard (
             @PathVariable("boardId") String boardId,
             HttpSession session
@@ -98,7 +98,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{boardId}/like")
+    @PostMapping("/board/{boardId}/like")
     public ResponseEntity<Void> likeBoard (
             @PathVariable("boardId") String boardId,
             HttpSession session
@@ -116,7 +116,7 @@ public class BoardController {
         return null;
     }
 
-    @PostMapping("/{boardId}/unlike")
+    @PostMapping("/board/{boardId}/unlike")
     public ResponseEntity<Void> unlikeBoard (
             @PathVariable("boardId") String boardId,
             HttpSession session
@@ -134,7 +134,7 @@ public class BoardController {
         return null;
     }
 
-    @GetMapping("/category")
+    @GetMapping("/board/category")
     public ResponseEntity<BoardListDto> getBoardListWithPaging(
             @RequestParam(value = "mainCategory", defaultValue = "HOME") String mainCategory,
             @RequestParam(value = "subCategory", defaultValue = "NONE") String subCategory,
@@ -148,7 +148,7 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(boards);
     }
 
-    @GetMapping("/auth")
+    @GetMapping("/auth/board")
     public ResponseEntity<BoardListDto> getBoardByMyPage(
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
