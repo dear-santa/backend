@@ -1,6 +1,7 @@
 package com.dearsanta.app.dto;
 
 import com.dearsanta.app.domain.Board;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,6 +9,7 @@ import java.util.Date;
 
 @Builder
 @Getter
+@AllArgsConstructor
 public class BoardDto {
     private String id;
     private String title;
@@ -15,6 +17,9 @@ public class BoardDto {
     private Date createdDate;
     private Date updatedDate;
     private String userId;
+    private String userNickname;
+    private String userImgUrl;
+    private int isMine;
     private String imgUrl;
     private int likeCount;
     private int viewCount;
