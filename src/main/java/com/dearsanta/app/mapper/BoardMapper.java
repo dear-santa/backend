@@ -2,6 +2,7 @@ package com.dearsanta.app.mapper;
 
 import com.dearsanta.app.domain.Board;
 import com.dearsanta.app.dto.*;
+import com.dearsanta.app.dto.criteria.BoardCriteria;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,7 +12,10 @@ public interface BoardMapper {
     BoardDto getBoard(String boardId);
     void updateBoard(Board boardRequestDto);
     void deleteBoard(String boardId);
-    List<BoardDto> getBoardListWithPaging(@Param("criteria")Criteria criteria);
+
+    List<BoardDto> getBoardListAll(@Param("criteria") BoardCriteria criteria);
+    List<BoardDto> getBoardListByMainCategory(@Param("criteria") BoardCriteria criteria);
+    List<BoardDto> getBoardListByMainAndSubCategory(@Param("criteria") BoardCriteria criteria);
 
     void increaseReplyCount(String boardId);
     void increaseViewCount(String boardId);

@@ -1,6 +1,6 @@
 package com.dearsanta.app.controller;
 
-import com.dearsanta.app.domain.MainCategory;
+import com.dearsanta.app.domain.enumtype.MainCategory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;

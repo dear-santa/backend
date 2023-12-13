@@ -1,6 +1,6 @@
 package com.dearsanta.app.dto;
 
-import com.dearsanta.app.domain.MainCategory;
+import com.dearsanta.app.domain.enumtype.MainCategory;
 import lombok.Builder;
 import lombok.Getter;
 

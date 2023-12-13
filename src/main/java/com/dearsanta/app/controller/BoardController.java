@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @RequestMapping("/api/v1/board")
 @RestController
@@ -131,15 +132,17 @@ public class BoardController {
         return null;
     }
 
-    @GetMapping("/{mainCategory}/{subCategory}")
+    @GetMapping("/category")
     public ResponseEntity<BoardListDto> getBoardListWithPaging(
-            @PathVariable(value = "mainCategory") String mainCategory,
-            @PathVariable(value = "subCategory") String subCategory,
+            @RequestParam(value = "mainCategory", defaultValue = "HOME") String mainCategory,
+            @RequestParam(value = "subCategory", defaultValue = "NONE") String subCategory,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
             @RequestParam(value = "sorted", defaultValue = "LATEST") Sorted sorted
     ) {
         BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, pageNum, pageSize, sorted);
+        log.info("getBoardListWithPaging " + LocalDateTime.now());
+        log.info("mainCategory : " + mainCategory + " subCategory : " + subCategory);
         return ResponseEntity.status(HttpStatus.OK).body(boards);
     }
 }
