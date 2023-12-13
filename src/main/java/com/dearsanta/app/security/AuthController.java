@@ -47,7 +47,7 @@ public class AuthController {
         String resolvedMemberId = (String) RequestContextHolder
                 .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
 
-        log.info("/member : " + resolvedMemberId);
+        log.info("/member 헤더로 memberId 꺼내기 : " + resolvedMemberId);
         return new ResponseEntity(resolvedMemberId, HttpStatus.OK);
     }
 }

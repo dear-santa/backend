@@ -45,7 +45,7 @@ public class KakaoOauthClient {
     private KakaoOauthTokenDto getKakaoAccessTokenByAuthorazationCode(String authorizeCode) {
         log.info("getKakaoOauthToken() - 프론트에서 받은 인가 코드로 accessToken 발급받기");
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        //restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

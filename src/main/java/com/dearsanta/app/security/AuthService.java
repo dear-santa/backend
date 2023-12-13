@@ -81,21 +81,22 @@ public class AuthService {
 
     private String updateAccessToken(Member member) {
         String memberId = member.getId();
+        String email = member.getEmail();
         String refreshToken = member.getRefreshToken();
         String newAccessToken = jwtTokenProvider.createBearerTokenWithValidity(memberId, accessTokenValidity);
 
-        validateRefreshToken(memberId, refreshToken);
+        validateRefreshToken(memberId, email);
         return newAccessToken;
     }
 
-    private void validateRefreshToken(String memberId, String refreshToken) {
-        Member findMember = memberMapper.findMemberByRefreshToken(refreshToken);
+    private void validateRefreshToken(String memberId, String email) {
+        Member findMember = memberMapper.findMemberByEmail(email);
         if (findMember == null) {
             throw new NoSuchElementException("해당 회원이 존재하지 않습니다.");
         }
 
-        boolean isRefreshTokenValid = findMember.getId().equals(memberId);
-        if (isRefreshTokenValid) {
+        boolean isValidMember = findMember.getId().equals(memberId);
+        if (!isValidMember) {
             throw new NoSuchElementException("해당 회원의 리프레시 토큰이 유효하지 않습니다.");
         }
     }

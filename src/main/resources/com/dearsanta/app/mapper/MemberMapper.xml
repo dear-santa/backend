@@ -40,14 +40,12 @@
         , role
         , img_url AS "imgUrl"
         , platform
-        , refresh_token AS "refreshToken"
         , created_date AS "createdDate"
         , updated_date AS "updatedDate"
         , IS_DELETED AS "isDeleted"
         FROM   member
-        WHERE  refresh_token = #{emarefreshTokenil}
+        WHERE  refresh_token = #{refreshToken, jdbcType=VARCHAR}
     </select>
-
 
     <insert id="saveMember">
         INSERT INTO member (
@@ -67,6 +65,4 @@
             #{refreshToken}
         )
     </insert>
-
-
 </mapper>
