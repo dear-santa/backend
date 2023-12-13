@@ -16,6 +16,7 @@ public interface BoardMapper {
     List<BoardDto> getBoardListAll(@Param("criteria") BoardCriteria criteria);
     List<BoardDto> getBoardListByMainCategory(@Param("criteria") BoardCriteria criteria);
     List<BoardDto> getBoardListByMainAndSubCategory(@Param("criteria") BoardCriteria criteria);
+    List<BoardDto> getBoardListByMemberId(@Param("criteria") Criteria criteria);
 
     void increaseReplyCount(String boardId);
     void increaseViewCount(String boardId);

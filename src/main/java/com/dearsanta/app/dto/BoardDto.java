@@ -14,7 +14,7 @@ public class BoardDto {
     private String content;
     private Date createdDate;
     private Date updatedDate;
-    private String userId;
+    private String memberId;
     private String imgUrl;
     private int likeCount;
     private int viewCount;
@@ -26,7 +26,7 @@ public class BoardDto {
                 .content(content)
                 .createdDate(createdDate)
                 .updatedDate(updatedDate)
-                .userId(userId)
+                .memberId(memberId)
                 .imgUrl(imgUrl)
                 .likeCount(likeCount)
                 .viewCount(viewCount)
