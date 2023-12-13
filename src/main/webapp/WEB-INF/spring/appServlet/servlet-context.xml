@@ -27,7 +27,7 @@
 
 	<interceptors>
 		<interceptor>
-			<mapping path="/**"/>
+			<mapping path="/api/v1/auth/**"/>
 			<beans:bean id="jwtInterceptor" class="com.dearsanta.app.security.JwtInterceptor" />
 		</interceptor>
 	</interceptors>
