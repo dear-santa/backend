@@ -25,4 +25,5 @@ public interface BoardMapper {
     void boardLike(BoardLikeDto boardLikeDto);
     void boardUnlike(String likeId);
     String findLikeId(@Param("boardId") String boardId, @Param("userId") String userId);
+    List<BoardDto> getBoardListWithPagingByKeyword(@Param("criteria") Criteria criteria);
 }

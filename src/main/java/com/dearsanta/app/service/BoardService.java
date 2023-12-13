@@ -18,4 +18,5 @@ public interface BoardService {
 
     void likeBoard(BoardLikeDto boardLikeDto);
     void unlikeBoard(BoardLikeDto boardLikeDto);
+    BoardListDto getBoardListWithPagingByKeyword(String keyword, int pageNum, int pageSize, Sorted sorted);
 }
