@@ -29,8 +29,7 @@
     </select>
     <select id="getReplyListWithPaging" parameterType="com.dearsanta.app.dto.Criteria" resultType="com.dearsanta.app.dto.ReplyDto">
         <![CDATA[
-        SELECT  /*+ INDEX_ASC(board ${criteria.sorted}) */
-                id,
+        SELECT  id,
                 user_id AS userId,
                 board_id AS boardId,
                 content,
@@ -38,7 +37,9 @@
                 updated_date AS updatedDate
         FROM
             (
-            SELECT  rownum AS rn,
+
+            SELECT  /*+ INDEX_DESC(reply ${criteria.sorted}) */
+                    rownum AS rn,
                     id,
                     user_id,
                     board_id,
@@ -47,6 +48,7 @@
                     updated_date
             FROM    reply
             WHERE   board_id = #{criteria.selectId}
+            AND     is_deleted = 0
             AND     ROWNUM <= #{criteria.pageNum} * #{criteria.pageSize}
             )
         WHERE   rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
