@@ -10,14 +10,18 @@
             title,
             content,
             member_id,
-            img_url
+            img_url,
+            main_category,
+            sub_category
         ) VALUES (
                      #{id, jdbcType=VARCHAR},
                      #{boardCategoryId, jdbcType=VARCHAR},
                      #{title, jdbcType=VARCHAR},
                      #{content, jdbcType=VARCHAR},
                      #{memberId, jdbcType=VARCHAR},
-                     #{imgUrl, jdbcType=VARCHAR}
+                     #{imgUrl, jdbcType=VARCHAR},
+                     #{mainCategory, jdbcType=VARCHAR},
+                     #{subCategory, jdbcType=VARCHAR}
                  )
     </insert>
     <select id="getBoard" resultType="com.dearsanta.app.dto.BoardDto">

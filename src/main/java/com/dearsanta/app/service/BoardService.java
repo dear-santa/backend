@@ -1,14 +1,11 @@
 package com.dearsanta.app.service;
 
 import com.dearsanta.app.domain.enumtype.Sorted;
-import com.dearsanta.app.dto.BoardDto;
-import com.dearsanta.app.dto.BoardLikeDto;
-import com.dearsanta.app.dto.BoardListDto;
-import com.dearsanta.app.dto.BoardRequestDto;
+import com.dearsanta.app.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface BoardService {
-    void createBoard(BoardRequestDto boardRequestDto, MultipartFile boardImage);
+    void createBoard(BoardCreateRequestDto boardCreateRequestDto, MultipartFile boardImage);
     BoardDto getBoard(String boardId);
     void updateBoard(String boardId, BoardRequestDto boardRequestDto, MultipartFile boardImage);
     void deleteBoard(String boardId);
