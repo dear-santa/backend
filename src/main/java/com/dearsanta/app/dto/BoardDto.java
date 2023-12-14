@@ -17,8 +17,8 @@ public class BoardDto {
     private Date createdDate;
     private Date updatedDate;
     private String memberId;
-    private String userNickname;
-    private String userImgUrl;
+    private String memberNickname;
+    private String memberImgUrl;
     private int isMine;
     private String imgUrl;
     private int likeCount;

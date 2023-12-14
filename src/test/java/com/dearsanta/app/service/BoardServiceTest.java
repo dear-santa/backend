@@ -88,12 +88,12 @@ public class BoardServiceTest {
         String boardCategoryId = "2";
         String title = "제목";
         String content = "내용";
-        String userId = "test user";
+        String memberId = "test member";
         BoardRequestDto boardRequestDto = BoardRequestDto.builder()
                 .boardCategoryId(boardCategoryId)
                 .title(title)
                 .content(content)
-                .userId(userId)
+                .memberId(memberId)
                 .build();
         boardService.createBoard(boardRequestDto, null);
     }
@@ -113,12 +113,12 @@ public class BoardServiceTest {
         String boardCategoryId = "4";
         String title = "제목";
         String content = "내용";
-        String userId = "User1";
+        String memberId = "member1";
         BoardRequestDto boardRequestDto = BoardRequestDto.builder()
                 .boardCategoryId(boardCategoryId)
                 .title(title)
                 .content(content)
-                .userId(userId)
+                .memberId(memberId)
                 .build();
         boardService.updateBoard(boardId, boardRequestDto, null);
     }
@@ -127,7 +127,7 @@ public class BoardServiceTest {
     @Test
     public void likeBoard() {
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                .userId("Test User 1")
+                .memberId("Test member 1")
                 .boardId("54c57f8a-705b-4571-92d6-a909619bc006")
                 .build();
         boardService.likeBoard(boardLikeDto);
@@ -138,7 +138,7 @@ public class BoardServiceTest {
     public void unlikeBoard() {
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .id("b70f52ee-f3d0-40fb-9799-4fea409fd9f3")
-                .userId("Test User 1")
+                .memberId("Test member 1")
                 .boardId("54c57f8a-705b-4571-92d6-a909619bc006")
                 .build();
         boardService.unlikeBoard(boardLikeDto);

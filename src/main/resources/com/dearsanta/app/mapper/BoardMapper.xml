@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dearsanta.app.mapper.BoardMapper">
-    <insert id="createBoard" parameterType="com.dearsanta.app.dto.BoardRequestDto">
+    <insert id="createBoard" parameterType="com.dearsanta.app.domain.Board">
         INSERT INTO board (
             id,
             board_category_id,
@@ -26,9 +26,9 @@
                 board.content,
                 board.created_date AS createdDate,
                 board.updated_date AS updatedDate,
-                board.user_id AS userId,
-                member.nickname AS userNickname,
-                member.img_url AS userImgUrl,
+                board.member_id AS memberId,
+                member.nickname AS memberNickname,
+                member.img_url AS memberImgUrl,
                 0 AS isMine,
                 board.img_url AS imgUrl,
                 board.like_count AS likeCount,
@@ -36,7 +36,7 @@
                 board.reply_count AS replyCount
         FROM    board
         LEFT    JOIN member
-        ON      board.user_id = member.id
+        ON      board.member_id = member.id
         WHERE   board.id = #{boardId}
         AND     board.is_deleted = 0
     </select>
@@ -63,8 +63,8 @@
             createdDate,
             updatedDate,
             memberId,
-            userNickname,
-            userImgUrl,
+            memberNickname,
+            memberImgUrl,
             isMine,
             imgUrl,
             likeCount,
@@ -80,8 +80,8 @@
                 board.created_date AS createdDate,
                 board.updated_date AS updatedDate,
                 board.member_id AS memberId,
-                member.nickname AS userNickname,
-                member.img_url AS userImgUrl,
+                member.nickname AS memberNickname,
+                member.img_url AS memberImgUrl,
                 0 AS isMine,
                 board.img_url AS imgUrl,
                 board.like_count AS likeCount,
@@ -106,8 +106,8 @@
             createdDate,
             updatedDate,
             memberId,
-            userNickname,
-            userImgUrl,
+            memberNickname,
+            memberImgUrl,
             isMine,
             imgUrl,
             likeCount,
@@ -123,8 +123,8 @@
                 board.created_date AS createdDate,
                 board.updated_date AS updatedDate,
                 board.member_id AS memberId,
-                member.nickname AS userNickname,
-                member.img_url AS userImgUrl,
+                member.nickname AS memberNickname,
+                member.img_url AS memberImgUrl,
                 0 AS isMine,
                 board.img_url AS imgUrl,
                 board.like_count AS likeCount,
@@ -150,8 +150,8 @@
             createdDate,
             updatedDate,
             memberId,
-            userNickname,
-            userImgUrl,
+            memberNickname,
+            memberImgUrl,
             isMine,
             imgUrl,
             likeCount,
@@ -167,8 +167,8 @@
                 board.created_date AS createdDate,
                 board.updated_date AS updatedDate,
                 board.member_id AS memberId,
-                member.nickname AS userNickname,
-                member.img_url AS userImgUrl,
+                member.nickname AS memberNickname,
+                member.img_url AS memberImgUrl,
                 0 AS isMine,
                 board.img_url AS imgUrl,
                 board.like_count AS likeCount,
@@ -193,8 +193,8 @@
             createdDate,
             updatedDate,
             memberId,
-            userNickname,
-            userImgUrl,
+            memberNickname,
+            memberImgUrl,
             isMine,
             imgUrl,
             likeCount,
@@ -210,8 +210,8 @@
                 board.created_date AS createdDate,
                 board.updated_date AS updatedDate,
                 board.member_id AS memberId,
-                member.nickname AS userNickname,
-                member.img_url AS userImgUrl,
+                member.nickname AS memberNickname,
+                member.img_url AS memberImgUrl,
                 0 AS isMine,
                 board.img_url AS imgUrl,
                 board.like_count AS likeCount,
@@ -234,9 +234,9 @@
             content,
             createdDate,
             updatedDate,
-            userId,
-            userNickname,
-            userImgUrl,
+            memberId,
+            memberNickname,
+            memberImgUrl,
             isMine,
             imgUrl,
             likeCount,
@@ -251,9 +251,9 @@
                     board.content,
                     board.created_date AS createdDate,
                     board.updated_date AS updatedDate,
-                    board.user_id AS userId,
-                    member.nickname AS userNickname,
-                    member.img_url AS userImgUrl,
+                    board.member_id AS memberId,
+                    member.nickname AS memberNickname,
+                    member.img_url AS memberImgUrl,
                     0 AS isMine,
                     board.img_url AS imgUrl,
                     board.like_count AS likeCount,
@@ -261,7 +261,7 @@
                     board.reply_count AS replyCount
             FROM    board
             LEFT    JOIN member
-            ON      board.user_id = member.id
+            ON      board.member_id = member.id
             WHERE   (board.title LIKE '%' || #{criteria.selectId} || '%'
             OR      board.content LIKE '%' || #{criteria.selectId} || '%')
             AND     board.is_deleted = 0

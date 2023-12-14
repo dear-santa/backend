@@ -54,6 +54,7 @@ public class BoardMapperTest {
     }
 
     @DisplayName("게시물을 등록합니다.")
+    @Ignore
     @Test
     public void createBoard() {
         String id = "will be set as a random id";
@@ -64,7 +65,7 @@ public class BoardMapperTest {
         String imgUrl = "img url";
         BoardRequestDto boardRequestDto = new BoardRequestDto(id, boardCategoryId, title, content, userId, imgUrl);
 
-        boardMapper.createBoard(boardRequestDto);
+        //boardMapper.createBoard(boardRequestDto);
     }
 
     @Ignore

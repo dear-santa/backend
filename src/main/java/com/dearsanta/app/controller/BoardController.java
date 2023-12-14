@@ -27,14 +27,14 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @PostMapping(value="/board/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="auth/board/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createBoard(
             @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
             @RequestPart("boardImage") MultipartFile boardImage) {
         log.info(boardRequestDto.getTitle() +  boardRequestDto.getContent() + boardImage);
-        String userId = (String) RequestContextHolder
+        String memberId = (String) RequestContextHolder
                 .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
-        if (userId == null) {
+        if (memberId == null) {
             throw new RuntimeException("권한이 없습니다.");
         }
         if (boardRequestDto.getTitle().length() > 100) {
@@ -43,9 +43,11 @@ public class BoardController {
         if (boardRequestDto.getContent().length() > 1000) {
             throw new IllegalArgumentException("내용은 1000자 이하로 입력해주세요.");
         }
-        boardRequestDto.setUserId(userId);
+
+        boardRequestDto.setMemberId(memberId);
+
         boardService.createBoard(boardRequestDto, boardImage);
-        log.info("createBoard");
+
         return ResponseEntity.ok().build();
     }
 
@@ -53,7 +55,7 @@ public class BoardController {
     public ResponseEntity<BoardDto> getBoard (
             @PathVariable("boardId") String boardId
     ) {
-        String userId = (String) RequestContextHolder
+        String memberId = (String) RequestContextHolder
             .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         BoardDto board = boardService.getBoard(boardId);
         log.info("getBoard: " + boardId);
@@ -65,10 +67,10 @@ public class BoardController {
             @PathVariable("boardId") String boardId,
             @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
             @RequestPart("boardImage") MultipartFile boardImage) {
-        String userId = (String) RequestContextHolder
+        String memberId = (String) RequestContextHolder
                 .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
-        String boardUserId = boardService.getBoard(boardId).getMemberId();
-        if (!userId.equals(boardUserId)) {
+        String boardmemberId = boardService.getBoard(boardId).getMemberId();
+        if (!memberId.equals(boardmemberId)) {
             throw new RuntimeException("권한이 없습니다.");
         }
         if (boardRequestDto.getTitle().length() > 100) {
@@ -85,10 +87,10 @@ public class BoardController {
     @DeleteMapping("/auth/board/{boardId}")
     public ResponseEntity<Void> deleteBoard (
             @PathVariable("boardId") String boardId) {
-        String userId = (String) RequestContextHolder
+        String memberId = (String) RequestContextHolder
                 .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
-        String boardUserId = boardService.getBoard(boardId).getMemberId();
-        if (!userId.equals(boardUserId)) {
+        String boardmemberId = boardService.getBoard(boardId).getMemberId();
+        if (!memberId.equals(boardmemberId)) {
             throw new RuntimeException("권한이 없습니다.");
         }
         boardService.deleteBoard(boardId);
@@ -99,13 +101,13 @@ public class BoardController {
     @PostMapping("/auth/board/{boardId}/like")
     public ResponseEntity<Void> likeBoard (
             @PathVariable("boardId") String boardId) {
-        String userId = (String) RequestContextHolder
+        String memberId = (String) RequestContextHolder
                 .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
-        if (userId == null) {
+        if (memberId == null) {
             throw new RuntimeException("권한이 없습니다.");
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                .userId(userId)
+                .memberId(memberId)
                 .boardId(boardId)
                 .build();
         boardService.likeBoard(boardLikeDto);
@@ -116,13 +118,13 @@ public class BoardController {
     @PostMapping("/auth/board/{boardId}/unlike")
     public ResponseEntity<Void> unlikeBoard (
             @PathVariable("boardId") String boardId) {
-        String userId = (String) RequestContextHolder
+        String memberId = (String) RequestContextHolder
             .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
-        if (userId == null) {
+        if (memberId == null) {
             throw new RuntimeException("권한이 없습니다.");
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                .userId(userId)
+                .memberId(memberId)
                 .boardId(boardId)
                 .build();
         boardService.unlikeBoard(boardLikeDto);

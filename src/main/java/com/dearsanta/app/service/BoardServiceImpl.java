@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -90,11 +91,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void createBoard(BoardRequestDto boardRequestDto, MultipartFile boardImage) {
         boardRequestDto.setId(UUID.randomUUID().toString());
+
         if (boardImage != null) {
             String imgUrl = aWSS3.uploadImage(boardRequestDto.getId(), boardImage);
             boardRequestDto.setImgUrl(imgUrl);
         }
-        boardMapper.createBoard(boardRequestDto);
+        Board board = boardRequestDto.toEntity();
+
+        boardMapper.createBoard(board);
     }
 
     @Override
@@ -142,7 +146,7 @@ public class BoardServiceImpl implements BoardService {
         if (board == null) {
             throw new NoSuchElementException("존재하지 않는 게시글입니다.");
         }
-        String likeId = boardMapper.findLikeId(board.getId(), boardLikeDto.getUserId());
+        String likeId = boardMapper.findLikeId(board.getId(), boardLikeDto.getMemberId());
         boardMapper.boardUnlike(likeId);
         boardMapper.decreaseLikeCount(board.getId());
     }

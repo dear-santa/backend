@@ -3,8 +3,8 @@ package com.dearsanta.app.dto;
 import com.dearsanta.app.domain.Board;
 import lombok.*;
 
-@Setter
 @Getter
+@Setter
 @Builder
 @ToString
 @NoArgsConstructor
@@ -14,7 +14,7 @@ public class BoardRequestDto {
     private String boardCategoryId;
     private String title;
     private String content;
-    private String userId;
+    private String memberId;
     private String imgUrl;
 
     public Board toEntity() {
@@ -23,7 +23,7 @@ public class BoardRequestDto {
                 .boardCategoryId(boardCategoryId)
                 .title(title)
                 .content(content)
-                .memberId(userId)
+                .memberId(memberId)
                 .imgUrl(imgUrl)
                 .build();
     }
