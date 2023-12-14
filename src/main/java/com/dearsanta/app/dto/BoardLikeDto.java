@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BoardLikeDto {
     private String id;
-    private String userId;
+    private String memberId;
     private String boardId;
 }

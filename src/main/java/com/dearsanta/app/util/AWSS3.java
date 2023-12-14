@@ -61,6 +61,8 @@ public class AWSS3 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return AwsS3Client().getUrl(bucketName, filePath).toString();
+        String result = "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + filePath;
+        return result;
     }
+
 }

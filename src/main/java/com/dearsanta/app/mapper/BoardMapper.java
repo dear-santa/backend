@@ -8,7 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface BoardMapper {
-    void createBoard(BoardRequestDto boardRequestDto);
+   // void createBoard(BoardRequestDto boardRequestDto);
+    void createBoard(Board board);
     BoardDto getBoard(String boardId);
     void updateBoard(Board boardRequestDto);
     void deleteBoard(String boardId);
@@ -24,6 +25,6 @@ public interface BoardMapper {
     void decreaseLikeCount(String boardId);
     void boardLike(BoardLikeDto boardLikeDto);
     void boardUnlike(String likeId);
-    String findLikeId(@Param("boardId") String boardId, @Param("userId") String userId);
+    String findLikeId(@Param("boardId") String boardId, @Param("memberId") String memberId);
     List<BoardDto> getBoardListWithPagingByKeyword(@Param("criteria") Criteria criteria);
 }
