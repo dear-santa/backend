@@ -49,16 +49,18 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/board/{boardId}")
+    @GetMapping("/auth/board/{boardId}")
     public ResponseEntity<BoardDto> getBoard (
             @PathVariable("boardId") String boardId
     ) {
+        String userId = (String) RequestContextHolder
+            .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         BoardDto board = boardService.getBoard(boardId);
         log.info("getBoard: " + boardId);
         return ResponseEntity.status(HttpStatus.OK).body(board);
     }
   
-    @PatchMapping(value="/board/{boardId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping(value="/auth/board/{boardId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateBoard (
             @PathVariable("boardId") String boardId,
             @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
@@ -80,7 +82,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/board/{boardId}")
+    @DeleteMapping("/auth/board/{boardId}")
     public ResponseEntity<Void> deleteBoard (
             @PathVariable("boardId") String boardId) {
         String userId = (String) RequestContextHolder
@@ -94,7 +96,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/board/{boardId}/like")
+    @PostMapping("/auth/board/{boardId}/like")
     public ResponseEntity<Void> likeBoard (
             @PathVariable("boardId") String boardId) {
         String userId = (String) RequestContextHolder
@@ -111,7 +113,7 @@ public class BoardController {
         return null;
     }
 
-    @PostMapping("/board/{boardId}/unlike")
+    @PostMapping("/auth/board/{boardId}/unlike")
     public ResponseEntity<Void> unlikeBoard (
             @PathVariable("boardId") String boardId) {
         String userId = (String) RequestContextHolder

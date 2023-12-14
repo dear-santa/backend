@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @RequestMapping("/api/v1")
 @Log4j
@@ -44,18 +44,20 @@ public class ReplyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/board/{boardId}/reply")
+    @GetMapping("/auth/board/{boardId}/reply")
     public ResponseEntity<ReplyListDto> getReplyListWithPaging(
             @PathVariable(value="boardId") String boardId,
             @RequestParam(value="pageNum", defaultValue="1") int pageNum,
             @RequestParam(value="pageSize", defaultValue="10") int pageSize,
             @RequestParam(value="sorted", defaultValue="REPLY_LATEST") Sorted sorted
     ) {
-        ReplyListDto replies = replyService.getReplyListWithPaging(boardId, pageNum, pageSize, sorted);
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
+        ReplyListDto replies = replyService.getReplyListWithPaging(userId, boardId, pageNum, pageSize, sorted);
         return ResponseEntity.status(HttpStatus.OK).body(replies);
     }
 
-    @PatchMapping("/reply/{replyId}")
+    @PatchMapping("/auth/reply/{replyId}")
     public ResponseEntity<Void> updateReply(
             @PathVariable("replyId") String replyId,
             @RequestBody ReplyDto replyDto) {
@@ -76,9 +78,9 @@ public class ReplyController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/reply/{replyId}")
+    @DeleteMapping("/auth/reply/{replyId}")
     public ResponseEntity<Void> deleteReply(
-            @PathVariable("replyId") String replyId){
+            @PathVariable("replyId") String replyId) {
         String userId = (String) RequestContextHolder
                 .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         String replyUserId = replyService.getReply(replyId).getUserId();
