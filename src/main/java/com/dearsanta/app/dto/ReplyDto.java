@@ -16,6 +16,7 @@ public class ReplyDto {
     private String userId;
     private String userNickname;
     private String userImgUrl;
+    private int isMine;
     private String boardId;
     private String content;
     private Date createdDate;
