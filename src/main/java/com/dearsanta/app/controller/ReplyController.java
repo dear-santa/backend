@@ -21,8 +21,7 @@ public class ReplyController {
 
     @Autowired
     private ReplyService replyService;
-
-    @PostMapping("/board/{boardId}/reply/new")
+    @PostMapping("/auth/board/{boardId}/reply/new")
     public ResponseEntity<Void> createReply(
             @PathVariable("boardId") String boardId,
             @RequestBody ReplyDto replyDto) {
