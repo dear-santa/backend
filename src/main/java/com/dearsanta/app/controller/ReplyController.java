@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,9 +25,10 @@ public class ReplyController {
     @PostMapping("/board/{boardId}/reply/new")
     public ResponseEntity<Void> createReply(
             @PathVariable("boardId") String boardId,
-            @RequestBody ReplyDto replyDto,
-            HttpSession session) {
-        Object userId = session.getAttribute("userId");
+            @RequestBody ReplyDto replyDto) {
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
+        log.info(userId);
         if (userId == null) {
             throw new RuntimeException("댓글 작성 권한이 없습니다.");
         }
@@ -35,7 +38,7 @@ public class ReplyController {
         else if (replyDto.getContent().length() > 1000) {
             throw new IllegalArgumentException("댓글을 1000자 이하로 입력해주세요.");
         }
-        replyDto.setUserId(userId.toString());
+        replyDto.setUserId(userId);
         replyDto.setBoardId(boardId);
         replyService.createReply(replyDto);
         log.info("create reply...");
@@ -56,11 +59,11 @@ public class ReplyController {
     @PatchMapping("/reply/{replyId}")
     public ResponseEntity<Void> updateReply(
             @PathVariable("replyId") String replyId,
-            @RequestBody ReplyDto replyDto,
-            HttpSession session) {
-        Object userId = session.getAttribute("userId");
+            @RequestBody ReplyDto replyDto) {
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         String replyUserId = replyService.getReply(replyId).getUserId();
-        if (!userId.toString().equals(replyUserId)) {
+        if (!userId.equals(replyUserId)) {
             throw new RuntimeException("댓글 수정 권한이 없습니다.");
         }
         if (replyDto.getContent().length() == 0) {
@@ -76,11 +79,11 @@ public class ReplyController {
 
     @DeleteMapping("/reply/{replyId}")
     public ResponseEntity<Void> deleteReply(
-            @PathVariable("replyId") String replyId,
-            HttpSession session){
-        Object userId = session.getAttribute("userId");
+            @PathVariable("replyId") String replyId){
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         String replyUserId = replyService.getReply(replyId).getUserId();
-        if (!userId.toString().equals(replyUserId)) {
+        if (!userId.equals(replyUserId)) {
             throw new RuntimeException("댓글 삭제 권한이 없습니다.");
         }
         replyService.deleteReply(replyId);

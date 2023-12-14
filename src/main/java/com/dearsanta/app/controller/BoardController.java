@@ -30,11 +30,10 @@ public class BoardController {
     @PostMapping(value="/board/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createBoard(
             @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
-            @RequestPart("boardImage") MultipartFile boardImage,
-            HttpSession session) {
+            @RequestPart("boardImage") MultipartFile boardImage) {
         log.info(boardRequestDto.getTitle() +  boardRequestDto.getContent() + boardImage);
-        // TODO: session에서 userId 가져오는 부분 service로 옮기기 (security 적용 후)
-        Object userId = session.getAttribute("userId");
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         if (userId == null) {
             throw new RuntimeException("권한이 없습니다.");
         }
@@ -44,7 +43,7 @@ public class BoardController {
         if (boardRequestDto.getContent().length() > 1000) {
             throw new IllegalArgumentException("내용은 1000자 이하로 입력해주세요.");
         }
-        boardRequestDto.setUserId(userId.toString());
+        boardRequestDto.setUserId(userId);
         boardService.createBoard(boardRequestDto, boardImage);
         log.info("createBoard");
         return ResponseEntity.ok().build();
@@ -63,12 +62,11 @@ public class BoardController {
     public ResponseEntity<Void> updateBoard (
             @PathVariable("boardId") String boardId,
             @RequestPart("boardRequestDto") BoardRequestDto boardRequestDto,
-            @RequestPart("boardImage") MultipartFile boardImage,
-            HttpSession session) {
-        // TODO: session에서 userId 가져와 비교하는 부분 service로 옮기기 (security 적용 후)
-        Object userId = session.getAttribute("userId");
+            @RequestPart("boardImage") MultipartFile boardImage) {
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         String boardUserId = boardService.getBoard(boardId).getMemberId();
-        if (!userId.toString().equals(boardUserId)) {
+        if (!userId.equals(boardUserId)) {
             throw new RuntimeException("권한이 없습니다.");
         }
         if (boardRequestDto.getTitle().length() > 100) {
@@ -84,13 +82,11 @@ public class BoardController {
 
     @DeleteMapping("/board/{boardId}")
     public ResponseEntity<Void> deleteBoard (
-            @PathVariable("boardId") String boardId,
-            HttpSession session
-    ) {
-        // TODO: session에서 userId 가져와 비교하는 부분 service로 옮기기 (security 적용 후)
-        Object userId = session.getAttribute("userId");
+            @PathVariable("boardId") String boardId) {
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         String boardUserId = boardService.getBoard(boardId).getMemberId();
-        if (!userId.toString().equals(boardUserId)) {
+        if (!userId.equals(boardUserId)) {
             throw new RuntimeException("권한이 없습니다.");
         }
         boardService.deleteBoard(boardId);
@@ -100,15 +96,14 @@ public class BoardController {
 
     @PostMapping("/board/{boardId}/like")
     public ResponseEntity<Void> likeBoard (
-            @PathVariable("boardId") String boardId,
-            HttpSession session
-    ) {
-        Object userId = session.getAttribute("userId");
+            @PathVariable("boardId") String boardId) {
+        String userId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         if (userId == null) {
             throw new RuntimeException("권한이 없습니다.");
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                .userId(userId.toString())
+                .userId(userId)
                 .boardId(boardId)
                 .build();
         boardService.likeBoard(boardLikeDto);
@@ -118,15 +113,14 @@ public class BoardController {
 
     @PostMapping("/board/{boardId}/unlike")
     public ResponseEntity<Void> unlikeBoard (
-            @PathVariable("boardId") String boardId,
-            HttpSession session
-    ) {
-        Object userId = session.getAttribute("userId");
+            @PathVariable("boardId") String boardId) {
+        String userId = (String) RequestContextHolder
+            .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         if (userId == null) {
             throw new RuntimeException("권한이 없습니다.");
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                .userId(userId.toString())
+                .userId(userId)
                 .boardId(boardId)
                 .build();
         boardService.unlikeBoard(boardLikeDto);
