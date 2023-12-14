@@ -3,14 +3,16 @@ package com.dearsanta.app.service;
 import com.dearsanta.app.domain.Reply;
 import com.dearsanta.app.domain.enumtype.Sorted;
 import com.dearsanta.app.dto.BoardDto;
-import com.dearsanta.app.dto.Criteria;
 import com.dearsanta.app.dto.ReplyDto;
 import com.dearsanta.app.dto.ReplyListDto;
+import com.dearsanta.app.dto.criteria.UserCriteria;
 import com.dearsanta.app.mapper.BoardMapper;
 import com.dearsanta.app.mapper.ReplyMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,7 +42,16 @@ public class ReplyServiceImpl implements ReplyService {
     public ReplyListDto getReplyListWithPaging(
             String boardId, int pageNum, int pageSize, Sorted sorted
     ) {
-        Criteria criteria = new Criteria(boardId, pageNum, pageSize, sorted.getIndexColumn());
+        String userId = (String) RequestContextHolder
+            .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
+        UserCriteria criteria = UserCriteria.builder()
+                .userId(userId)
+                .selectId(boardId)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .sorted(sorted.getIndexColumn())
+                .build();
+
         log.info("pageNum:" + pageNum + " pageSize: " + pageSize + " sort: " + sorted.getIndexColumn());
 
         List<ReplyDto> replyDtos = replyMapper.getReplyListWithPaging(criteria);

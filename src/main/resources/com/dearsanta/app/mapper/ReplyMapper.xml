@@ -31,17 +31,19 @@
         WHERE   reply.id = #{replyId}
         AND     reply.is_deleted = 0
     </select>
-    <select id="getReplyListWithPaging" parameterType="com.dearsanta.app.dto.Criteria" resultType="com.dearsanta.app.dto.ReplyDto">
+    <select id="getReplyListWithPaging" parameterType="com.dearsanta.app.dto.criteria.UserCriteria" resultType="com.dearsanta.app.dto.ReplyDto">
         <![CDATA[
         SELECT
             id,
             userId,
             userNickname,
             userImgUrl,
+            CASE WHEN userId = #{criteria.userId, jdbcType=VARCHAR} THEN 1 ELSE 0 END AS isMine,
             boardId,
             content,
             createDate,
-            updatedDate
+            updatedDate,
+            isDeleted
         FROM
             (
             SELECT  /*+ INDEX_DESC(reply ${criteria.sorted}) */
@@ -53,7 +55,8 @@
                     reply.board_id AS boardId,
                     reply.content,
                     reply.created_date AS createDate,
-                    reply.updated_date AS updatedDate
+                    reply.updated_date AS updatedDate,
+                    reply.is_deleted AS isDeleted
             FROM    reply
             LEFT    JOIN member
             ON      reply.user_id = member.id

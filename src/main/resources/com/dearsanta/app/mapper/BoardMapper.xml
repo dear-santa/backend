@@ -35,8 +35,10 @@
                 board.view_count AS viewCount,
                 board.reply_count AS replyCount
         FROM    board
-        WHERE   id = #{boardId}
-        AND     is_deleted = 0
+        LEFT    JOIN member
+        ON      board.user_id = member.id
+        WHERE   board.id = #{boardId}
+        AND     board.is_deleted = 0
     </select>
     <update id="updateBoard" parameterType="com.dearsanta.app.domain.Board">
         UPDATE  board
