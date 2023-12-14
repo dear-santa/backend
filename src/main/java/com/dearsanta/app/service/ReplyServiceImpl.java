@@ -11,8 +11,6 @@ import com.dearsanta.app.mapper.ReplyMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,10 +38,8 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public ReplyListDto getReplyListWithPaging(
-            String boardId, int pageNum, int pageSize, Sorted sorted
+            String userId, String boardId, int pageNum, int pageSize, Sorted sorted
     ) {
-        String userId = (String) RequestContextHolder
-            .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
         UserCriteria criteria = UserCriteria.builder()
                 .userId(userId)
                 .selectId(boardId)
