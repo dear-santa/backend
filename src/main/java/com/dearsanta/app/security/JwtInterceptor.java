@@ -33,7 +33,9 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
     }
 
     public String getMemberIdByAccessToken(String accessToken) {
+        log.info("getMemberIdByAccessToken() accessToken : " + accessToken);
         String token = jwtTokenProvider.resolveBearerToken(accessToken);
+        log.info("resolveBearerToken() accessToken : " + token);
         Claims claims = jwtTokenProvider.getClaims(token);
         String memberId = claims.get("memberId").toString();
         log.info("claims : " + claims + " memberId : " + memberId);
