@@ -1,5 +1,6 @@
 package com.dearsanta.app.security;
 
+import com.dearsanta.app.domain.Member;
 import com.dearsanta.app.security.dto.LoginRequestDto;
 import com.dearsanta.app.security.dto.LoginResponseDto;
 import com.dearsanta.app.service.MemberService;
@@ -49,5 +50,15 @@ public class AuthController {
 
         log.info("/member 헤더로 memberId 꺼내기 : " + resolvedMemberId);
         return new ResponseEntity(resolvedMemberId, HttpStatus.OK);
+    }
+
+    @GetMapping("/auth/member")
+    public ResponseEntity<Member> getMemberInfoWithImg(
+    ) {
+        String resolvedMemberId = (String) RequestContextHolder
+                .currentRequestAttributes().getAttribute("memberId", RequestAttributes.SCOPE_REQUEST);
+        log.info("memberId : " + resolvedMemberId);
+        Member member = memberService.getMemberByMemberId(resolvedMemberId);
+        return new ResponseEntity(member, HttpStatus.OK);
     }
 }
