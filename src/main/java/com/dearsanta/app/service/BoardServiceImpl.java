@@ -32,20 +32,21 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardListDto getBoardListWithPaging(
-            String mainCategory, String subCategory, int pageNum, int pageSize, Sorted sorted
+            String mainCategory, String subCategory, String keyword, int pageNum, int pageSize, Sorted sorted
     ) {
         log.info("mainCategory :" + mainCategory + " subCategory :" + subCategory);
         log.info("pageNum:" + pageNum + " pageSize: " + pageSize + " sort: " + sorted.getIndexColumn());
-        List<BoardDto> boardDtos = getBoardListDtoByCriteria(mainCategory, subCategory, pageNum, pageSize, sorted);
+        List<BoardDto> boardDtos = getBoardListDtoByCriteria(mainCategory, subCategory, keyword, pageNum, pageSize, sorted);
 
         return new BoardListDto(boardDtos);
     }
 
-    private List<BoardDto> getBoardListDtoByCriteria(String mainCategory, String subCategory, int pageNum, int pageSize, Sorted sorted) {
+    private List<BoardDto> getBoardListDtoByCriteria(String mainCategory, String subCategory, String keyword, int pageNum, int pageSize, Sorted sorted) {
 
         BoardCriteria criteria = BoardCriteria.builder()
                 .mainCategory(mainCategory)
                 .subCategory(subCategory)
+                .keyword(keyword)
                 .pageNum(pageNum)
                 .pageSize(pageSize)
                 .sorted(sorted.getIndexColumn())
@@ -149,18 +150,5 @@ public class BoardServiceImpl implements BoardService {
         String likeId = boardMapper.findLikeId(board.getId(), boardLikeDto.getMemberId());
         boardMapper.boardUnlike(likeId);
         boardMapper.decreaseLikeCount(board.getId());
-    }
-
-    @Override
-    public BoardListDto getBoardListWithPagingByKeyword(String keyword, int pageNum, int pageSize, Sorted sorted) {
-        Criteria criteria = Criteria.builder()
-                .selectId(keyword)
-                .pageNum(pageNum)
-                .pageSize(pageSize)
-                .sorted(sorted.getIndexColumn())
-                .build();
-
-        List<BoardDto> boardDtos = boardMapper.getBoardListWithPagingByKeyword(criteria);
-        return new BoardListDto(boardDtos);
     }
 }

@@ -55,11 +55,12 @@ public class BoardServiceTest {
     public void getBoardListWithPaging_pageSize() {
         String mainCategory = "PRESENT";
         String subCategory = "해리";
+        String keyword = "";
         int pageNum = 1;
         int pageSize = 5;
         Sorted sorted = Sorted.LATEST;
 
-        BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, pageNum, pageSize, sorted);
+        BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, keyword, pageNum, pageSize, sorted);
         List<BoardDto> boardList = boards.getBoardListDto();
 
         Assertions.assertEquals(boardList.size(), pageSize);
@@ -70,11 +71,12 @@ public class BoardServiceTest {
     public void getBoardListWithPaging_sort() {
         String mainCategory = "PRESENT";
         String subCategory = "해리";
+        String keyword = "";
         int pageNum = 1;
         int pageSize = 5;
         Sorted sorted = Sorted.LIKE_COUNT;
 
-        BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, pageNum, pageSize, sorted);
+        BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, keyword, pageNum, pageSize, sorted);
         List<BoardDto> boardList = boards.getBoardListDto();
         BoardDto firstBoardDto = boardList.get(0);
         BoardDto secondBoardDto = boardList.get(0);

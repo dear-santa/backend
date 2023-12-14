@@ -16,7 +16,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 @RequestMapping("/api/v1")
@@ -136,26 +135,14 @@ public class BoardController {
     public ResponseEntity<BoardListDto> getBoardListWithPaging(
             @RequestParam(value = "mainCategory", defaultValue = "HOME") String mainCategory,
             @RequestParam(value = "subCategory", defaultValue = "NONE") String subCategory,
-            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
-            @RequestParam(value = "sorted", defaultValue = "LATEST") Sorted sorted
-    ) {
-        BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, pageNum, pageSize, sorted);
-        log.info("getBoardListWithPaging " + LocalDateTime.now());
-        log.info("mainCategory : " + mainCategory + " subCategory : " + subCategory);
-        return ResponseEntity.status(HttpStatus.OK).body(boards);
-    }
-
-    @GetMapping(value="/board")
-    public ResponseEntity<BoardListDto> getBoardListWithPagingByKeyword (
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
             @RequestParam(value = "sorted", defaultValue = "LATEST") Sorted sorted
     ) {
-        BoardListDto boards = boardService.getBoardListWithPagingByKeyword(keyword, pageNum, pageSize, sorted);
-        log.info("getBoardListWithPagingByKeyword " + LocalDateTime.now());
-        log.info("keyword : " + keyword);
+        BoardListDto boards = boardService.getBoardListWithPaging(mainCategory, subCategory, keyword, pageNum, pageSize, sorted);
+        log.info("getBoardListWithPaging " + LocalDateTime.now());
+        log.info("mainCategory : " + mainCategory + " subCategory : " + subCategory);
         return ResponseEntity.status(HttpStatus.OK).body(boards);
     }
 

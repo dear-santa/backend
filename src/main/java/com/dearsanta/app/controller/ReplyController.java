@@ -48,7 +48,7 @@ public class ReplyController {
     public ResponseEntity<ReplyListDto> getReplyListWithPaging(
             @PathVariable(value="boardId") String boardId,
             @RequestParam(value="pageNum", defaultValue="1") int pageNum,
-            @RequestParam(value="pageSize", defaultValue="10") int pageSize,
+            @RequestParam(value="pageSize", defaultValue="100") int pageSize,
             @RequestParam(value="sorted", defaultValue="REPLY_LATEST") Sorted sorted
     ) {
         String userId = (String) RequestContextHolder
