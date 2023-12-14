@@ -30,7 +30,7 @@
         , updated_date AS "updatedDate"
         , IS_DELETED AS "isDeleted"
         FROM   member
-        WHERE  member_id = #{memberId}
+        WHERE  id = #{memberId}
     </select>
 
     <select id="findMemberByRefreshToken" resultType="Member">
