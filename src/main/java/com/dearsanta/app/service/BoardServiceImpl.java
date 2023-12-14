@@ -90,14 +90,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void createBoard(BoardRequestDto boardRequestDto, MultipartFile boardImage) {
-        boardRequestDto.setId(UUID.randomUUID().toString());
+    public void createBoard(BoardCreateRequestDto boardCreateRequestDto, MultipartFile boardImage) {
+        boardCreateRequestDto.setId(UUID.randomUUID().toString());
 
         if (boardImage != null) {
-            String imgUrl = aWSS3.uploadImage(boardRequestDto.getId(), boardImage);
-            boardRequestDto.setImgUrl(imgUrl);
+            String imgUrl = aWSS3.uploadImage(boardCreateRequestDto.getId(), boardImage);
+            boardCreateRequestDto.setImgUrl(imgUrl);
         }
-        Board board = boardRequestDto.toEntity();
+        Board board = boardCreateRequestDto.toEntity();
 
         boardMapper.createBoard(board);
     }

@@ -1,10 +1,7 @@
 package com.dearsanta.app.service;
 
 import com.dearsanta.app.domain.enumtype.Sorted;
-import com.dearsanta.app.dto.BoardDto;
-import com.dearsanta.app.dto.BoardLikeDto;
-import com.dearsanta.app.dto.BoardListDto;
-import com.dearsanta.app.dto.BoardRequestDto;
+import com.dearsanta.app.dto.*;
 import lombok.extern.log4j.Log4j;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -91,13 +88,13 @@ public class BoardServiceTest {
         String title = "제목";
         String content = "내용";
         String memberId = "test member";
-        BoardRequestDto boardRequestDto = BoardRequestDto.builder()
+        BoardCreateRequestDto boardCreateRequestDto = BoardCreateRequestDto.builder()
                 .boardCategoryId(boardCategoryId)
                 .title(title)
                 .content(content)
                 .memberId(memberId)
                 .build();
-        boardService.createBoard(boardRequestDto, null);
+        boardService.createBoard(boardCreateRequestDto, null);
     }
 
     @DisplayName("게시물을 상세조회합니다. 게시글이 존재할 경우")

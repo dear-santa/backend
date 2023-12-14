@@ -18,6 +18,8 @@ public class Board {
     private Date updatedDate;
     private String memberId;
     private String imgUrl;
+    private String mainCategory;
+    private String subCategory;
     private int likeCount;
     private int replyCount;
     private int viewCount;
