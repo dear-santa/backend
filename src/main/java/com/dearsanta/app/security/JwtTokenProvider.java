@@ -1,10 +1,7 @@
 package com.dearsanta.app.security;
 
 import com.dearsanta.app.security.dto.TokenDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.security.Keys;
@@ -20,8 +17,8 @@ public class JwtTokenProvider {
     private String jwtIssuer = "dearsanta";
     private String bearerHeader = "Bearer ";
     private String jwtSecretKey = "tm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpAtm4zrpa3tlZzqsJzrsJzsnpfvbnoperufgvjlsdnvkjhwfhDrpbzrp4zrk6TslrTqsID";
-    private long accessTokenValidity = 1000000000;
-    private long refreshTokenValidity = 1000000000;
+    private long accessTokenValidity = 10 * 24 * 60 * 60 * 1000;
+    private long refreshTokenValidity = 10 * 24 * 60 * 60 * 1000;
     private SecretKey secretKey;
     private String MEMBER_ID = "memberId";
 
@@ -45,8 +42,9 @@ public class JwtTokenProvider {
     }
 
     private String createTokenWithValidity(String memberId, long tokenValidity){
-        Date now = new Date();
-        Date expirationAt = new Date(now.getTime() + tokenValidity);
+        Date now = new Date(System.currentTimeMillis());
+        Date expirationAt = new Date(now.getTime() + accessTokenValidity);
+        log.info("createTokenWithValidity() : " + expirationAt);
 
         return Jwts.builder()
                 .claim(MEMBER_ID, memberId)
@@ -85,7 +83,7 @@ public class JwtTokenProvider {
         if (token != null && token.startsWith(bearerHeader)) {
             return token.substring(bearerHeader.length());
         }
-        throw new NoSuchElementException("토큰이 만료되었습니다.");
+        throw new NoSuchElementException("토큰 형식이 잘못되었습니다. " + token);
     }
 
     public Long getExpirationTime(String accessToken) {
