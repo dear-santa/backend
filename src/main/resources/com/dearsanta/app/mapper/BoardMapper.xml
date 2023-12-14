@@ -221,6 +221,9 @@
             LEFT JOIN member
             ON board.member_id = member.id
             WHERE rownum <= #{criteria.pageNum} * #{criteria.pageSize}
+            AND board.is_deleted = 0
+            AND (board.title LIKE '%' || #{criteria.keyword} || '%'
+            OR board.content LIKE '%' || #{criteria.keyword} || '%')
             )
         WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.pageSize}
         ]]>

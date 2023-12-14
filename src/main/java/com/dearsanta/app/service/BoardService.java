@@ -13,10 +13,9 @@ public interface BoardService {
     void updateBoard(String boardId, BoardRequestDto boardRequestDto, MultipartFile boardImage);
     void deleteBoard(String boardId);
     String findBoardCategoryId(String mainCategory, String subCategory);
-    BoardListDto getBoardListWithPaging(String mainCategory, String subCategory, int pageNum, int pageSize, Sorted sorted);
+    BoardListDto getBoardListWithPaging(String mainCategory, String subCategory, String keyword, int pageNum, int pageSize, Sorted sorted);
     BoardListDto getBoardListOfMyPageWithPaging(String memberId, int pageNum, int pageSize, Sorted sorted);
 
     void likeBoard(BoardLikeDto boardLikeDto);
     void unlikeBoard(BoardLikeDto boardLikeDto);
-    BoardListDto getBoardListWithPagingByKeyword(String keyword, int pageNum, int pageSize, Sorted sorted);
 }

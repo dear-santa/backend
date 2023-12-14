@@ -11,4 +11,5 @@ import lombok.experimental.SuperBuilder;
 public class BoardCriteria extends Criteria {
     private String mainCategory;
     private String subCategory;
+    private String keyword;
 }
