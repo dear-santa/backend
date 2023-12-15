@@ -49,6 +49,9 @@ public class KakaoOauthClient {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        log.info("client_id " + properties.getKAKAO_CLIENT_ID());
+        log.info("redirect_uri " + properties.getKAKAO_REDIRECT_URI());
+        log.info("code " + authorizeCode);
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
