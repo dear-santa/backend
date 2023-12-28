@@ -5,7 +5,6 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,13 +20,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     @Qualifier("jwtInterceptor")
     private JwtInterceptor jwtInterceptor;
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://dearsanta.shop", "https://dearsanta.shop", "http://www.dearsanta.shop", "https://www.dearsanta.shop", properties.getFRONT_LOCAL_URL() )
-                .allowedMethods("OPTIONS","GET","POST","PUT","DELETE");
-    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
