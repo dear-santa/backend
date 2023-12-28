@@ -22,7 +22,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        log.info("JwtInterceptor - preHandle(): 로그인 시도");
         String accessToken = request.getHeader("Authorization");
         String memberId = getMemberIdByAccessToken(accessToken);
 

@@ -12,6 +12,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.NoSuchElementException;
@@ -60,7 +62,17 @@ public class KakaoOauthClient {
         body.add("code", authorizeCode);
 
         HttpEntity<?> request = new HttpEntity<>(body, headers);
-        return restTemplate.postForObject(TOKEN_URI, request, KakaoOauthTokenDto.class);
+        KakaoOauthTokenDto kakaoOauthTokenDto = null;
+        try {
+            kakaoOauthTokenDto = restTemplate.postForEntity(TOKEN_URI, request, KakaoOauthTokenDto.class).getBody();
+        } catch(HttpClientErrorException e) {
+            log.error("HttpClientErrorException : " + e.getResponseBodyAsString());
+        } catch(HttpServerErrorException e) {
+            log.error("HttpServerErrorException : " + e.getResponseBodyAsString());
+        } catch(Exception e) {
+            log.error("Exception : " + e);
+        }
+        return kakaoOauthTokenDto;
     }
 
     // 2. 토큰으로 사용자 정보 조회하기
